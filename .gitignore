@@ -1,5 +1,4 @@
 .coverage
-.coveragerc
 ./__pycache__/*
 */__pycache__/*
 create-json.py
