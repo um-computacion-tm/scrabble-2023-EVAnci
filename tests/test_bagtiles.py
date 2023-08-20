@@ -6,6 +6,7 @@ import unittest
 from game.bagtiles import (
     BagTiles,
     Tile,
+    Wildcard,
     TOTAL_TILES,
     PutBagFullException,
     TakeBagEmptyException
@@ -22,13 +23,25 @@ class TestTilesCreation(unittest.TestCase):
         self.assertEqual(tile.letter, 'A')
         self.assertEqual(tile.value, 1)
 
+class TestWildcardTile(unittest.TestCase):
+    def test_wildcard(self):
+        wildcard = Wildcard()
+        self.assertEqual(wildcard.letter, '')
+        self.assertEqual(wildcard.value, 0)
+
+    def test_select_wildcard_letter(self):
+        wildcard = Wildcard()
+        wildcard.select_letter('a')
+        self.assertEqual(wildcard.letter, 'A')
+        self.assertEqual(wildcard.value, 1)
+
 class TestBagTiles(unittest.TestCase):
-    @patch('random.shuffle')
+    @patch('random.shuffle') # Mock random.shuffle function
     def test_bag_tiles(self, patch_shuffle):
         bag = BagTiles()
         self.assertEqual(len(bag.tiles), TOTAL_TILES)
-        self.assertEqual(patch_shuffle.call_count, 1)
-        self.assertEqual(patch_shuffle.call_args[0][0], bag.tiles)
+        self.assertEqual(patch_shuffle.call_count, 1) # Check it's called once
+        self.assertEqual(patch_shuffle.call_args[0][0], bag.tiles) 
 
     def test_take(self):
         bag = BagTiles()
