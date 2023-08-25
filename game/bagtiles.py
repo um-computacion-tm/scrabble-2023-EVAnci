@@ -72,7 +72,6 @@ class BagTiles:
                 raise TakeBagEmptyException
         except TakeBagEmptyException:
             pass
-            # print('No hay suficientes fichas!') # Search how to notify the user in other way
         return tiles_taken
 
     def put(self, tiles):
@@ -83,4 +82,3 @@ class BagTiles:
                 raise PutBagFullException
         except PutBagFullException:
             pass
-            # print('La bolsa esta llena o hay fichas de más!')
