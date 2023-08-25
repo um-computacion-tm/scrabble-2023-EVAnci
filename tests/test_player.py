@@ -32,5 +32,6 @@ class TestPlayer(unittest.TestCase):
     def test_change_tiles(self):
         player = Player()
         player.give_tiles(['A', 'B', 'C'])
-        player.change_tiles(old_tiles_index=[2,3], new_tiles=['Z', 'Y'])
+        old_tiles = player.change_tiles(old_tiles_index=[2,3], new_tiles=['Z', 'Y'])
         self.assertEqual(player.lectern, ['A', 'Z', 'Y'])
+        self.assertEqual(old_tiles, ['B', 'C'])
