@@ -8,7 +8,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
-## [0.0.2] - 20-08-23 (development)
+## [0.0.4] - 2023-08-28 (development)
+
+### Added
+
+- Game cell class with add letter and calculate value methods.
+- Game 15x15 board.
+
+### Fixed
+
+- Add a missing if \_\_name__ == '\_\_main__' to test_player.py file.
+
+## [0.0.3] - 2023-08-25 (development)
+
+### Added
+
+- Player Class.
+- Player methods to add and change tiles.
+- requirements file.
+
+### Known Issues
+
+- Anything at the moment.
+
+## [0.0.2] - 2023-08-20 (development)
 
 ### Added
  
@@ -23,11 +46,11 @@ Development
 
 - Add the .coveragerc file that was ignored by git.
 
-### Known issues
+### Known Issues
 
-- The full/empty bag message isn't properly implemented
+- The full/empty bag message isn't properly implemented.
 
-## [0.0.1] - 17-08-23 (development)
+## [0.0.1] - 2023-08-17 (development)
 
 ### Added 
 
@@ -44,8 +67,8 @@ Development
 
 ### Removed
 
-- The list of 98 tiles
+- The list of 98 tiles.
 
 ### Knowm Issues
 
-- Anything at the moment
+- Anything at the moment.
