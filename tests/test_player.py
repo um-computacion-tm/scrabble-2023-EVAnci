@@ -35,3 +35,6 @@ class TestPlayer(unittest.TestCase):
         old_tiles = player.change_tiles(old_tiles_index=[2,3], new_tiles=['Z', 'Y'])
         self.assertEqual(player.lectern, ['A', 'Z', 'Y'])
         self.assertEqual(old_tiles, ['B', 'C'])
+
+if __name__ == '__main__':
+    unittest.main()
