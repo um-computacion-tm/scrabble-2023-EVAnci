@@ -8,6 +8,73 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.8] - 2023-09-03 (development)
+
+### Added
+
+- Navigation system for the cli.
+- Add give 7 tiles for each player.
+- Show board and lectern function
+- Add a line in .coveragerc file, to ignore main.py
+
+### Changed
+
+- Change menu print system to return the string.
+- Modify some name in file cell.py 
+
+### Removed
+
+- Unnesessary print tests.
+
+### Fixed
+
+- Cli implementation is complete.
+
+### Known Issues
+
+- main.py file is ignored by coverage, and is not tested by now
+
+## [0.0.7] - 2023-09-02 (development)
+
+### Added
+
+- end_game method in ScrabbleGame class.
+
+### Changed
+
+- Remake all cli file, making it more modular.
+
+### Fixed
+
+- All tests are complete and working.
+
+### Known Issues
+
+- Cli implementation is incomplete.
+
+## [0.0.6] - 2023-09-01 (development)
+
+### Added
+
+- Add cli file, with basic functionality.
+
+### Known Issues
+
+- Cli implementation is incomplete.
+- Test cli isn't working.
+
+## [0.0.5] - 2023-08-30 (development)
+
+### Added
+
+- Add active attribute to cell class.
+- Add calculate word value method to board class.
+- Add circleci and codeclimate config files.
+
+### Known Issues
+
+- Anything at the moment.
+
 ## [0.0.4] - 2023-08-28 (development)
 
 ### Added
