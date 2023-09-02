@@ -50,6 +50,26 @@ git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
 - The [Wikipedia (EN)](https://en.wikipedia.org/wiki/Scrabble)
 - The [Wikipedia (ES)](https://es.wikipedia.org/wiki/Scrabble)
 
+## CircleCI
+
+### Main branch
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main)
+
+### Develop branch
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop)
+
+## Codeclimate 
+
+### Mantainability
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/maintainability)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/maintainability)
+
+### Coverage
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/test_coverage)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/test_coverage)
+
 ## Student data
 
 Universidad de Mendoza
