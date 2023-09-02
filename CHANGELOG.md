@@ -8,6 +8,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.6] - 2023-09-01 (development)
+
+### Added
+
+- Add cli file, with basic functionality.
+
+### Known Issues
+
+- Cli implementation is incomplete.
+- Test cli isn't working.
+
+## [0.0.5] - 2023-08-30 (development)
+
+### Added
+
+- Add active attribute to cell class.
+- Add calculate word value method to board class.
+- Add circleci and codeclimate config files.
+
+### Known Issues
+
+- Anything at the moment.
+
 ## [0.0.4] - 2023-08-28 (development)
 
 ### Added
