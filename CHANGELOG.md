@@ -8,6 +8,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.7] - 2023-09-02 (development)
+
+### Added
+
+- end_game method in ScrabbleGame class.
+
+### Changed
+
+- Remake all cli file, making it more modular.
+
+### Fixed
+
+- All tests are complete and working.
+
+### Known Issues
+
+- Cli implementation is incomplete.
+
 ## [0.0.6] - 2023-09-01 (development)
 
 ### Added
