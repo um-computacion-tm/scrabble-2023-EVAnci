@@ -5,15 +5,15 @@ class Cell:
         self.multiplier = multiplier
         self.letter_multiplier = letter_multiplier
         self.active = active
-        self.letter = None
+        self.tile = None
 
-    def add_letter(self, letter:Tile):
-        self.letter = letter
+    def add_letter(self, tile:Tile):
+        self.tile = tile
 
     def calculate_value(self):
-        if self.letter is None:
+        if self.tile is None:
             return 0
         if self.letter_multiplier and self.active:
-            return self.letter.value * self.multiplier
+            return self.tile.value * self.multiplier
         else:
-            return self.letter.value
+            return self.tile.value
