@@ -10,3 +10,8 @@ class ScrabbleGame:
         self.players = []
         for number in range(players_count):
             self.players.append(Player(number=number))
+
+    def end_game(self):
+        if len(self.bag_tiles.tiles) == 0:
+            return True
+        return False
