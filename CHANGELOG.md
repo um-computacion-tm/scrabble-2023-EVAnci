@@ -8,6 +8,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.8] - 2023-09-03 (development)
+
+### Added
+
+- Navigation system for the cli.
+- Add give 7 tiles for each player.
+- Show board and lectern function
+- Add a line in .coveragerc file, to ignore main.py
+
+### Changed
+
+- Change menu print system to return the string.
+- Modify some name in file cell.py 
+
+### Removed
+
+- Unnesessary print tests.
+
+### Fixed
+
+- Cli implementation is complete.
+
+### Known Issues
+
+- main.py file is ignored by coverage, and is not tested by now
+
 ## [0.0.7] - 2023-09-02 (development)
 
 ### Added
