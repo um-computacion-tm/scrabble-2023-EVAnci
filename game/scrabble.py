@@ -9,7 +9,8 @@ class ScrabbleGame:
         self.bag_tiles = BagTiles()
         self.players = []
         for number in range(players_count):
-            self.players.append(Player(number=number))
+            self.players.append(Player(number=number+1))
+            self.players[number].give_tiles(self.bag_tiles.take(7))
 
     def end_game(self):
         if len(self.bag_tiles.tiles) == 0:
