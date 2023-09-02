@@ -9,5 +9,6 @@ def input_int(message=''):
 def range_input(from_value=0, to_value=0, message=''):
     selection = input_int(message)
     while not((from_value <= selection) and (selection <= to_value)):
+        print(f'Debe ser un numero entre {from_value} y {to_value}')
         selection = input_int(message)
     return selection
