@@ -33,6 +33,7 @@ Development
 ### Known Issues
 
 - main.py file is ignored by coverage, and is not tested by now
+- Wildcard tile hasn't a letter, print lectern get an error printing it
 
 ## [0.0.7] - 2023-09-02 (development)
 
