@@ -14,3 +14,15 @@ class Board():
             cell.active = False
         points = points * word_multiplier
         return points
+
+    def validate_word_inside_board(self, word, location, orientation):
+        if orientation == 'H':
+            if len(word) <= len(self.grid)-location[0]:
+                return True
+            else:
+                return False
+        else:
+            if len(word) <= len(self.grid)-location[1]:
+                return True
+            else:
+                return False
