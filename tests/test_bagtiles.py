@@ -26,7 +26,7 @@ class TestTilesCreation(unittest.TestCase):
 class TestWildcardTile(unittest.TestCase):
     def test_wildcard(self):
         wildcard = Wildcard()
-        self.assertEqual(wildcard.letter, '')
+        self.assertEqual(wildcard.letter, '?')
         self.assertEqual(wildcard.value, 0)
 
     def test_select_wildcard_letter(self):
