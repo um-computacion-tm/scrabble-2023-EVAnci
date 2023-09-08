@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.10] - 2023-09-08 (development)
+
+### Added
+
+- Implemented tests for view_board and view_lectern methods.
+
+### Fixed
+
+- Moved _view_lectern_()  funtion to a player method.
+- Moved _view_board_()  funtion to a board method.
+
 ## [0.0.9] - 2023-09-06 (development)
 
 ### Added
