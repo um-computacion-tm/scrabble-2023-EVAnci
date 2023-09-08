@@ -15,8 +15,8 @@ class Board():
         points = points * word_multiplier
         return points
 
-    def validate_word_inside_board(self, word, location, orientation):
-        if orientation == 'H':
+    def validate_word_inside_board(self, word, location, horizontal):
+        if horizontal:
             if len(word) <= len(self.grid)-location[0]:
                 return True
             else:
@@ -26,3 +26,25 @@ class Board():
                 return True
             else:
                 return False
+
+    def view(self):
+        view = ('                  TABLERO\n\n')
+        view += (' '*8)
+        for i in 'ABCDEFGHIJKLMNL':
+            view += (f'{i} ')
+        view += '\n'
+        for row in range(len(self.grid)):
+            # if the number is higher than 2 digits, then
+            # you need to erase an space for correct formatting
+            if row+1 < 10:
+                view += (f'  {row+1}  |  ')
+            else:
+                view += (f' {row+1}  |  ')
+            for column in range(len(self.grid[row])):
+                try:
+                    view += (f'{self.grid[row][column].tile.letter} ')
+                except:
+                    view += ('_ ')
+            view += '\n'
+        view += '\n'
+        return view
