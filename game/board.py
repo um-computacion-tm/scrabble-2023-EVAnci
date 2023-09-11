@@ -26,6 +26,14 @@ class Board():
                 return True
             else:
                 return False
+    
+    def put_word(self,word,location,horizontal):
+        if horizontal:
+            for i in range(len(word)):
+                self.grid[location[0]][location[1]+i].tile = word[i]
+        else:
+            for i in range(len(word)):
+                self.grid[location[0]+i][location[1]].tile = word[i]
 
     def view(self):
         view = ('                  TABLERO\n\n')

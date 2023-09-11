@@ -1,5 +1,6 @@
 import unittest
 from game.board import Board
+from game.bagtiles import Tile
 
 class TestBoard(unittest.TestCase):
     def test_board(self):
@@ -38,6 +39,28 @@ class TestBoard(unittest.TestCase):
         horizontal = False
         word_is_valid = board.validate_word_inside_board(word, location, horizontal)
         assert word_is_valid == False
+
+    def test_put_word_h(self):
+        board = Board()
+        word = [Tile('C',3), Tile('A',1), Tile('S',6), Tile('A',1)]
+        location = (5, 4)
+        horizontal = True
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[5][4+i].tile.letter
+        self.assertEqual('CASA',word_in_board)
+
+    def test_put_word_v(self):
+        board = Board()
+        word = [Tile('C',3), Tile('A',1), Tile('S',6), Tile('A',1)]
+        location = (5, 4)
+        horizontal = False
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[5+i][4].tile.letter
+        self.assertEqual('CASA',word_in_board)
 
     def test_print_board(self):
         board = Board()
