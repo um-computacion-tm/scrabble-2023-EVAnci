@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.11] - 2023-09-12 (development)
+
+### Changed
+
+- Upgrade validate_word method in board class to validate words that use other words or letters.
+
 ## [0.0.10] - 2023-09-08 (development)
 
 ### Added
