@@ -15,32 +15,69 @@ class Board():
         points = points * word_multiplier
         return points
 
-    def validate(self, word, pos, horizontal):
+    def is_empty(self):
+        if self.grid[7][7].tile is None:
+            return True
+        return False
+
+    def validate_empty(self, word, pos, horizontal):
+        h_space = len(word) <= len(self.grid)-pos[0]
+        v_space = len(word) <= len(self.grid)-pos[1]
+        if (horizontal and h_space and pos[0]==7):
+            for i in range(len(word)):
+                if pos[1] + i == 7:
+                    return [True]
+        elif (not horizontal and v_space and pos[1]==7):
+            for i in range(len(word)):
+                if pos[0] + i == 7:
+                    return [True]
+        return [False]
+
+# Guardar las posiciones de las letras que ya se encuentran en el tablero y devolverlas con un return
+# de este modo puedo saber que letras ya estan en el tablero, y puedo validar las tiles que necesito 
+# del usuario
+
+    def validate_not_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
         is_valid = 0
+        previous_tiles = []
         if (horizontal and h_space):
             for i in range(len(word)):
-                cell = self.grid[pos[0]-1][pos[1]-1+i].tile
-                if cell is None or cell.letter == word[i]:
-                    is_valid += 1
+                cell = self.grid[pos[0]][pos[1]+i].tile
+                if cell is not None:
+                    if cell.letter == word[i]:
+                        is_valid += 1
+                        previous_tiles.append(cell)
+                    else:
+                        previous_tiles.append(None)
         elif ((not horizontal) and v_space):
             for i in range(len(word)):
-                cell = self.grid[pos[0]-1+i][pos[1]-1].tile
-                if cell is None or cell.letter == word[i]:
-                    is_valid += 1
-        if is_valid == len(word):
-            return True
+                cell = self.grid[pos[0]+i][pos[1]].tile
+                if cell is not None:
+                    if cell.letter == word[i]:
+                        is_valid += 1
+                        previous_tiles.append(cell)
+                    else:
+                        previous_tiles.append(None)
+        if is_valid != 0:
+            return [True, previous_tiles]
         else:
-            return False
+            return [False]
+
+    def validate(self, word, pos, horizontal):
+        if self.is_empty():
+            return self.validate_empty(word, pos, horizontal)
+        else:
+            return self.validate_not_empty(word, pos, horizontal)
         
     def put_word(self,word,pos,horizontal):
         if horizontal:
             for i in range(len(word)):
-                self.grid[pos[0]-1][pos[1]-1+i].tile = word[i]
+                self.grid[pos[0]][pos[1]+i].tile = word[i]
         else:
             for i in range(len(word)):
-                self.grid[pos[0]-1+i][pos[1]-1].tile = word[i]
+                self.grid[pos[0]+i][pos[1]].tile = word[i]
 
     def view(self):
         view = ('                  TABLERO\n\n')
