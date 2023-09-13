@@ -13,7 +13,7 @@ class TestBoard(unittest.TestCase):
         word = "Facultad"
         location = (5, 4)
         horizontal = True
-        word_is_valid = board.validate_word_inside_board(word, location, horizontal)
+        word_is_valid = board.validate(word, location, horizontal)
         assert word_is_valid == True
     
     def test_word_out_of_board_h(self):
@@ -21,7 +21,7 @@ class TestBoard(unittest.TestCase):
         word = "Facultad"
         location = (14, 4)
         horizontal = True
-        word_is_valid = board.validate_word_inside_board(word, location, horizontal)
+        word_is_valid = board.validate(word, location, horizontal)
         assert word_is_valid == False
 
     def test_word_inside_board_v(self):
@@ -29,7 +29,7 @@ class TestBoard(unittest.TestCase):
         word = "Facultad"
         location = (5, 4)
         horizontal = False
-        word_is_valid = board.validate_word_inside_board(word, location, horizontal)
+        word_is_valid = board.validate(word, location, horizontal)
         assert word_is_valid == True
     
     def test_word_out_of_board_v(self):
@@ -37,7 +37,7 @@ class TestBoard(unittest.TestCase):
         word = "Facultad"
         location = (5, 14)
         horizontal = False
-        word_is_valid = board.validate_word_inside_board(word, location, horizontal)
+        word_is_valid = board.validate(word, location, horizontal)
         assert word_is_valid == False
 
     def test_put_word_h(self):
@@ -48,7 +48,7 @@ class TestBoard(unittest.TestCase):
         board.put_word(word,location,horizontal)
         word_in_board = ''
         for i in range(4):
-            word_in_board += board.grid[5][4+i].tile.letter
+            word_in_board += board.grid[4][3+i].tile.letter
         self.assertEqual('CASA',word_in_board)
 
     def test_put_word_v(self):
@@ -59,8 +59,44 @@ class TestBoard(unittest.TestCase):
         board.put_word(word,location,horizontal)
         word_in_board = ''
         for i in range(4):
-            word_in_board += board.grid[5+i][4].tile.letter
+            word_in_board += board.grid[4+i][3].tile.letter
         self.assertEqual('CASA',word_in_board)
+
+    def test_validate_word_with_previous_word(self):
+        board = Board()
+        word_1 = [Tile('C',3), Tile('A',1), Tile('S',6), Tile('A',1)]
+        location_1 = (5, 4)
+        horizontal_1 = True
+        board.put_word(word_1,location_1,horizontal_1)
+        word_2 = [Tile('L',3), Tile('A',1), Tile('S',6), Tile('O',1)]
+        location_2 = (5, 4)
+        horizontal_2 = False
+        word_is_valid = board.validate(word_2,location_2,horizontal_2)
+        assert word_is_valid == False
+
+    def test_validate_word_with_different_pos_previous_word(self):
+        board = Board()
+        word_1 = [Tile('C',3), Tile('A',1), Tile('S',6), Tile('A',1)]
+        location_1 = (5, 4)
+        horizontal_1 = True
+        board.put_word(word_1,location_1,horizontal_1)
+        word_2 = 'LASO'
+        location_2 = (6, 4)
+        horizontal_2 = False
+        word_is_valid = board.validate(word_2,location_2,horizontal_2)
+        assert word_is_valid == True
+
+    def test_validate_word_with_same_previous_letter(self):
+        board = Board()
+        word_1 = [Tile('C',3), Tile('A',1), Tile('S',6), Tile('A',1)]
+        location_1 = (5, 4)
+        horizontal_1 = True
+        board.put_word(word_1,location_1,horizontal_1)
+        word_2 = 'LASO'
+        location_2 = (4, 5)
+        horizontal_2 = False
+        word_is_valid = board.validate(word_2,location_2,horizontal_2)
+        self.assertEqual(word_is_valid, True)
 
     def test_print_board(self):
         board = Board()

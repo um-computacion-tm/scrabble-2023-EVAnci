@@ -15,25 +15,32 @@ class Board():
         points = points * word_multiplier
         return points
 
-    def validate_word_inside_board(self, word, location, horizontal):
-        if horizontal:
-            if len(word) <= len(self.grid)-location[0]:
-                return True
-            else:
-                return False
+    def validate(self, word, pos, horizontal):
+        h_space = len(word) <= len(self.grid)-pos[0]
+        v_space = len(word) <= len(self.grid)-pos[1]
+        is_valid = 0
+        if (horizontal and h_space):
+            for i in range(len(word)):
+                cell = self.grid[pos[0]-1][pos[1]-1+i].tile
+                if cell is None or cell.letter == word[i]:
+                    is_valid += 1
+        elif ((not horizontal) and v_space):
+            for i in range(len(word)):
+                cell = self.grid[pos[0]-1+i][pos[1]-1].tile
+                if cell is None or cell.letter == word[i]:
+                    is_valid += 1
+        if is_valid == len(word):
+            return True
         else:
-            if len(word) <= len(self.grid)-location[1]:
-                return True
-            else:
-                return False
-    
-    def put_word(self,word,location,horizontal):
+            return False
+        
+    def put_word(self,word,pos,horizontal):
         if horizontal:
             for i in range(len(word)):
-                self.grid[location[0]][location[1]+i].tile = word[i]
+                self.grid[pos[0]-1][pos[1]-1+i].tile = word[i]
         else:
             for i in range(len(word)):
-                self.grid[location[0]+i][location[1]].tile = word[i]
+                self.grid[pos[0]-1+i][pos[1]-1].tile = word[i]
 
     def view(self):
         view = ('                  TABLERO\n\n')
