@@ -26,12 +26,12 @@ class Board():
         if (horizontal and h_space and pos[0]==7):
             for i in range(len(word)):
                 if pos[1] + i == 7:
-                    return [True]
+                    return True
         elif (not horizontal and v_space and pos[1]==7):
             for i in range(len(word)):
                 if pos[0] + i == 7:
-                    return [True]
-        return [False]
+                    return True
+        return False
 
 # Guardar las posiciones de las letras que ya se encuentran en el tablero y devolverlas con un return
 # de este modo puedo saber que letras ya estan en el tablero, y puedo validar las tiles que necesito 
@@ -61,9 +61,9 @@ class Board():
                     else:
                         previous_tiles.append(None)
         if is_valid != 0:
-            return [True, previous_tiles]
+            return True
         else:
-            return [False]
+            return False
 
     def validate(self, word, pos, horizontal):
         if self.is_empty():
