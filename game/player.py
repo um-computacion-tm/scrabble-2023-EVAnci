@@ -16,3 +16,20 @@ class Player:
             old_tiles.append(self.lectern[old_tiles_index[i]-1])
             self.lectern[old_tiles_index[i]-1] = new_tiles[i]
         return old_tiles
+
+    def view_lectern(self):
+        view = '                     ATRIL\n\n'
+        view += f'Letras -> '
+        letters = ''
+        letters_index = ''
+        for i in range(len(self.lectern)):
+            letters += f' | {self.lectern[i].letter}'
+            if len(self.lectern[i].letter) == 1:
+                letters_index += f'   {i+1}'
+            else:
+                letters_index += f'    {i+1}'
+        letters += f' |'
+        view += letters+'\n'
+        view += f'Indice -> '
+        view += letters_index+'\n\n'
+        return view

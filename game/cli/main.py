@@ -5,7 +5,6 @@ from game.player import *
 from game.scrabble import * 
 from game.cli.menu import *
 from game.cli.validate import *
-from game.cli.show_board import *
 
 print('Bienvenido al juego Scrabble!')
 num_of_players = range_input(
@@ -32,9 +31,9 @@ while not(end_game):
             print(f'Turno del jugador {scrabble.players[turno].number} ({scrabble.players[turno].name})  ')
             selection = nav()
             if selection == 'board':
-                print_board(scrabble.board.grid)
+                print(scrabble.board.view())
             elif selection == 'lectern':
-                print_lectern(scrabble.players[turno].lectern)
+                print(scrabble.players[turno].view_lectern())
             elif selection == 'points':
                 for i in range(num_of_players):
                     print(f'El jugador {scrabble.players[i].number} ({scrabble.players[i].name}) tiene {scrabble.players[i].points} puntos')

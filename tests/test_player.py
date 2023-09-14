@@ -1,6 +1,6 @@
 import unittest
 from game.player import Player, LECTERN_SIZE
-from game.bagtiles import BagTiles
+from game.bagtiles import BagTiles, Tile
 from unittest.mock import patch
 
 class TestPlayer(unittest.TestCase):
@@ -35,6 +35,23 @@ class TestPlayer(unittest.TestCase):
         old_tiles = player.change_tiles(old_tiles_index=[2,3], new_tiles=['Z', 'Y'])
         self.assertEqual(player.lectern, ['A', 'Z', 'Y'])
         self.assertEqual(old_tiles, ['B', 'C'])
+
+    def test_print_lectern(self):
+        player = Player()
+        tiles = []
+        for i in range(6):
+            tiles.append(Tile('A',1))
+        tiles.append(Tile('AA',1))
+        player.give_tiles(tiles)
+        actual_output = player.view_lectern()
+        expected_output = '''                     ATRIL
+
+Letras ->  | A | A | A | A | A | A | AA |
+Indice ->    1   2   3   4   5   6    7
+
+'''
+        self.assertEqual(actual_output,expected_output)
+
 
 if __name__ == '__main__':
     unittest.main()

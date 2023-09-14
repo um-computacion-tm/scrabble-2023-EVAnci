@@ -8,6 +8,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.11] - 2023-09-12 (development)
+
+### Changed
+
+- Upgrade validate_word method in board class to validate words that use other words or letters.
+
+## [0.0.10] - 2023-09-08 (development)
+
+### Added
+
+- Implemented tests for view_board and view_lectern methods.
+
+### Fixed
+
+- Moved _view_lectern_()  funtion to a player method.
+- Moved _view_board_()  funtion to a board method.
+
+## [0.0.9] - 2023-09-06 (development)
+
+### Added
+
+- Add validate_word_inside_board method to the class board.
+- Add next_turn method to scrabble class.
+
+### Fixed
+
+- Wildcard tile letter is '?', so print lectern works fine.
+
+### Known Issues
+
+- Some methods like print_board, print_lectern must be in the class it should be.
+- main.py file is ignored by coverage, and is not tested by now
+
 ## [0.0.8] - 2023-09-03 (development)
 
 ### Added
@@ -33,6 +66,7 @@ Development
 ### Known Issues
 
 - main.py file is ignored by coverage, and is not tested by now
+- Wildcard tile hasn't a letter, print lectern get an error printing it
 
 ## [0.0.7] - 2023-09-02 (development)
 

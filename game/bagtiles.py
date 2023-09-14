@@ -40,7 +40,7 @@ class Tile:
 
 class Wildcard(Tile):
     def __init__(self):
-        super().__init__(letter='', value=0)
+        super().__init__(letter='?', value=0)
 
     def select_letter(self, selection):
         selection = selection.upper()
