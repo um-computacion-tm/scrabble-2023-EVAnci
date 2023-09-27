@@ -8,6 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.12] - 2023-09-27 (development)
+
+### Added
+
+- Add pyrae library to validate words in board class.
+
+### Changed
+
+- Remake validation testing in board class. 
+
+### Known Issues
+
+- Validation don't work for double letter tiles.
+
 ## [0.0.11] - 2023-09-12 (development)
 
 ### Changed

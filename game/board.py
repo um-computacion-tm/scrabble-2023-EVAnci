@@ -1,4 +1,5 @@
 from game.cell import Cell
+from pyrae import dle
 
 class Board():
     def __init__(self):
@@ -15,32 +16,64 @@ class Board():
         points = points * word_multiplier
         return points
 
-    def validate(self, word, pos, horizontal):
+    def is_empty(self):
+        if self.grid[7][7].tile is None:
+            return True
+        return False
+
+    def validate_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
+        if (horizontal and h_space and pos[0]==7):
+            for i in range(len(word)):
+                if pos[1] + i == 7:
+                    return True
+        elif (not horizontal and v_space and pos[1]==7):
+            for i in range(len(word)):
+                if pos[0] + i == 7:
+                    return True
+        return False
+
+    def validate_not_empty(self, word, pos, horizontal):
+        h_space = len(word) <= len(self.grid)-pos[0]
+        v_space = len(word) <= len(self.grid)-pos[1]
+        intersections = 0
         is_valid = 0
         if (horizontal and h_space):
             for i in range(len(word)):
-                cell = self.grid[pos[0]-1][pos[1]-1+i].tile
-                if cell is None or cell.letter == word[i]:
-                    is_valid += 1
+                cell = self.grid[pos[0]][pos[1]+i].tile
+                if cell is not None:
+                    intersections += 1
+                    if cell.letter == word[i]:
+                        is_valid += 1
         elif ((not horizontal) and v_space):
             for i in range(len(word)):
-                cell = self.grid[pos[0]-1+i][pos[1]-1].tile
-                if cell is None or cell.letter == word[i]:
-                    is_valid += 1
-        if is_valid == len(word):
+                cell = self.grid[pos[0]+i][pos[1]].tile
+                if cell is not None:
+                    intersections += 1
+                    if cell.letter == word[i]:
+                        is_valid += 1
+        if is_valid != 0 and intersections == is_valid:
             return True
         else:
             return False
-        
+
+    def validate(self, word, pos, horizontal):
+        rae = dle.search_by_word(word)
+        if word.lower() in rae.title:
+            if self.is_empty():
+                return self.validate_empty(word, pos, horizontal)
+            else:
+                return self.validate_not_empty(word, pos, horizontal)
+        return False
+
     def put_word(self,word,pos,horizontal):
         if horizontal:
             for i in range(len(word)):
-                self.grid[pos[0]-1][pos[1]-1+i].tile = word[i]
+                self.grid[pos[0]][pos[1]+i].tile = word[i]
         else:
             for i in range(len(word)):
-                self.grid[pos[0]-1+i][pos[1]-1].tile = word[i]
+                self.grid[pos[0]+i][pos[1]].tile = word[i]
 
     def view(self):
         view = ('                  TABLERO\n\n')
