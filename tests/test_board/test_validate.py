@@ -91,15 +91,24 @@ class Test_Validate_not_empty(unittest.TestCase):
         self.assertEqual(result, False)
 
 class Test_Validate(unittest.TestCase):
-    def test_valid_word(self):
-        board = Board()
-        result = board.validate(word='CASA',pos=(7,7),horizontal=True)
-        self.assertEqual(result, True)
-
     def test_invalid_word(self):
         board = Board()
         result = board.validate(word='YOAS',pos=(7,7),horizontal=True)
         self.assertEqual(result, False)
+
+    def test_valid_word_empty(self):
+        board = Board()
+        result = board.validate(word='CASA',pos=(7,7),horizontal=True)
+        self.assertEqual(result, True)
+
+    def test_valid_word_not_empty(self):
+        board = Board()
+        board.grid[7][7].tile = Tile('C',3)
+        board.grid[7][8].tile = Tile('A',1)
+        board.grid[7][9].tile = Tile('S',6)
+        board.grid[7][10].tile = Tile('A',1)
+        result = board.validate(word='LASO',pos=(6,10),horizontal=False)
+        self.assertEqual(result, True)
 
 if __name__ == '__main__':
     unittest.main()
