@@ -1,4 +1,5 @@
 from game.cell import Cell
+from pyrae import dle
 
 class Board():
     def __init__(self):
@@ -36,30 +37,36 @@ class Board():
     def validate_not_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
+        intersections = 0
         is_valid = 0
         if (horizontal and h_space):
             for i in range(len(word)):
                 cell = self.grid[pos[0]][pos[1]+i].tile
                 if cell is not None:
+                    intersections += 1
                     if cell.letter == word[i]:
                         is_valid += 1
         elif ((not horizontal) and v_space):
             for i in range(len(word)):
                 cell = self.grid[pos[0]+i][pos[1]].tile
                 if cell is not None:
+                    intersections += 1
                     if cell.letter == word[i]:
                         is_valid += 1
-        if is_valid != 0:
+        if is_valid != 0 and intersections == is_valid:
             return True
         else:
             return False
 
     def validate(self, word, pos, horizontal):
-        if self.is_empty():
-            return self.validate_empty(word, pos, horizontal)
-        else:
-            return self.validate_not_empty(word, pos, horizontal)
-        
+        rae = dle.search_by_word(word)
+        if word.lower() in rae.title:
+            if self.is_empty():
+                return self.validate_empty(word, pos, horizontal)
+            else:
+                return self.validate_not_empty(word, pos, horizontal)
+        return False
+
     def put_word(self,word,pos,horizontal):
         if horizontal:
             for i in range(len(word)):
