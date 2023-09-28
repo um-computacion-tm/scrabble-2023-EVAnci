@@ -1,37 +1,21 @@
-####################
-#     Imports      #
-####################
-
 from os import path
 import random, json
 
-####################
-#    Exceptions    #
-####################
-
-class PutBagFullException(Exception):
+class InsufficientTiles(Exception):
     pass
 
-class TakeBagEmptyException(Exception):
+class BagIsFull(Exception):
     pass
-
-####################
-#     Constant     #
-####################
 
 TOTAL_TILES=100
 
 # With the sentence 'with open() as name', the json file is open and 
 # readed by python. To get the absolute directory where it's located
 # I used path.abspath().
-with open(path.abspath('tiles.json')) as json_file:
-    DATA = json.load(json_file)
 # The data collected in the json file is stored in the var 'data', 
 # which then is used to store all the tiles in the 'tiles array'.
-
-####################
-#      Clases      #
-####################
+with open(path.abspath('tiles.json')) as json_file:
+    DATA = json.load(json_file)
 
 class Tile:
     def __init__(self, letter, value):
@@ -62,23 +46,20 @@ class BagTiles:
         # shuffle the bag
         random.shuffle(self.tiles)
 
-    def take(self, count):
+    def take(self, quantity):
+        # 0 <= quantity <= 7
         tiles_taken = []
-        try:
-            if len(self.tiles) >= count:
-                for _ in range(count):
-                    tiles_taken.append(self.tiles.pop())
-            else:
-                raise TakeBagEmptyException
-        except TakeBagEmptyException:
-            pass
-        return tiles_taken
+        if quantity == 0:
+            return tiles_taken
+        elif quantity <= len(self.tiles):
+            for _ in range(quantity):
+                tiles_taken.append(self.tiles.pop())
+            return tiles_taken
+        else:
+            raise InsufficientTiles
 
     def put(self, tiles):
-        try:
-            if len(self.tiles)+len(tiles) <= TOTAL_TILES:
-                self.tiles.extend(tiles)
-            else:
-                raise PutBagFullException
-        except PutBagFullException:
-            pass
+        if len(self.tiles)+len(tiles) <= TOTAL_TILES:
+            self.tiles.extend(tiles)
+        else:
+            raise BagIsFull
