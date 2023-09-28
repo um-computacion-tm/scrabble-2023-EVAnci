@@ -8,6 +8,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.13] - 2023-09-28 (development)
+
+### Added
+
+- Rasing exception for when the user is not connected to the internet in board class.
+
+### Changed
+
+- Mock the output of the dle.search_by_word for validate word method in board class.
+- Raising exceptions when the bag is full and when are unsufficient tiles in the bag in bagtiles module.
+
+### Removed
+
+- Unnesessary comments in bagtiles module.
+
+### Known Issues
+
+- Validation don't work for double letter tiles.
+
 ## [0.0.12] - 2023-09-27 (development)
 
 ### Added
