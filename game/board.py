@@ -1,6 +1,9 @@
 from game.cell import Cell
 from pyrae import dle
 
+class NotInternetConnection(Exception):
+    pass
+
 class Board():
     def __init__(self):
         self.grid = [[Cell(1, '') for _ in range(15)] for _ in range(15)]
@@ -60,6 +63,8 @@ class Board():
 
     def validate(self, word, pos, horizontal):
         rae = dle.search_by_word(word)
+        if rae == None:
+            raise NotInternetConnection
         if word.lower() in rae.title:
             if self.is_empty():
                 return self.validate_empty(word, pos, horizontal)

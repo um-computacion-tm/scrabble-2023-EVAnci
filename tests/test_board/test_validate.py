@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from game.board import Board
+from game.board import Board, NotInternetConnection
 from game.bagtiles import Tile
 
 class Test_Validate_empty(unittest.TestCase):
@@ -116,6 +116,13 @@ class Test_Validate(unittest.TestCase):
         board.grid[7][10].tile = Tile('A',1)
         result = board.validate(word='LASO',pos=(6,10),horizontal=False)
         self.assertEqual(result, True)
+
+    @patch('game.board.dle.search_by_word')
+    def test_validate_not_internet_connection(self, mock_search_by_word):
+        mock_search_by_word.return_value = None
+        board = Board()
+        with self.assertRaises(NotInternetConnection):
+            board.validate(word='CASA',pos=(7,7),horizontal=True)
 
 if __name__ == '__main__':
     unittest.main()
