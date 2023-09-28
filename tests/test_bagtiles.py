@@ -1,21 +1,13 @@
-####################
-#     Imports      #
-####################
-
 import unittest
+from unittest.mock import patch
 from game.bagtiles import (
     BagTiles,
     Tile,
     Wildcard,
     TOTAL_TILES,
-    PutBagFullException,
-    TakeBagEmptyException
+    InsufficientTiles,
+    BagIsFull
 )
-from unittest.mock import patch
-
-####################
-#      Tests       #
-####################
 
 class TestTilesCreation(unittest.TestCase):
     def test_tile(self):
@@ -52,11 +44,18 @@ class TestBagTiles(unittest.TestCase):
     def test_take_empty(self):
         bag = BagTiles()
         bag.take(TOTAL_TILES)
-        self.assertEqual([], bag.take(1))
+        with self.assertRaises(InsufficientTiles):
+            bag.take(1)
+
+    def test_take_invalid(self):
+        bag = BagTiles()
+        bag.take(97)
+        with self.assertRaises(InsufficientTiles):
+            bag.take(4)
 
     def test_put_one(self):
         bag = BagTiles()
-        taken = bag.take(7) # Take 7 to avoid the raise
+        taken = bag.take(7)
         self.assertEqual(len(bag.tiles), TOTAL_TILES-7)
         put_tiles = [taken[0]]
         bag.put(put_tiles)
@@ -70,14 +69,10 @@ class TestBagTiles(unittest.TestCase):
         bag.put(put_tiles)
         self.assertEqual(len(bag.tiles), TOTAL_TILES-4)
 
-    def test_put_full(self):
+    def test_put_with_full_bag(self):
         bag = BagTiles()
-        bag.put([Tile('A', 1)])
-        self.assertEqual(TOTAL_TILES,len(bag.tiles))
-
-####################
-#      Start       #
-####################
+        with self.assertRaises(BagIsFull):
+            bag.put([Tile('A', 1)])
 
 if __name__ == '__main__':
     unittest.main()
