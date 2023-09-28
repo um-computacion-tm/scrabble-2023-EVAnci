@@ -1,7 +1,7 @@
 # The Scrabble Game
 Scrabble is a word game in which two to four players score points by placing tiles, each bearing a single letter, onto a game board divided into a 15×15 grid of squares. The tiles must form words that, in crossword fashion, read left to right in rows or downward in columns and are included in a standard dictionary or lexicon.
 
-## Usage
+## Rules
 
 The Spanish-language games use these 100 tiles:
 
@@ -22,7 +22,7 @@ Spanish-language games sold within North America (known as Scrabble - Spanish Ed
 
 #### Complete guide of the rules of the game [here](https://service.mattel.com/instruction_sheets/51280.pdf)
 
-### To execute the tests
+## Run Tests
 
 You can run just the following:
 
@@ -30,15 +30,36 @@ You can run just the following:
 python3 -m unittest
 ```
 
-Or if you want to see also the [coverage](https://coverage.readthedocs.io/en/7.3.0/) :
+Or if you want to see the [coverage](https://coverage.readthedocs.io/en/7.3.0/):
 
 ```bash
 coverage run -m unittest && coverage report -m
 ```
 
+In case you don't have coverage installed, I recommend installing it on a python [venv](https://docs.python.org/3/library/venv.html):
+
+```bash
+# 1. Create a Virtual Environment
+python3 -m venv env
+# 2. Activate the Virtual Environment
+source env/bin/activate
+# 3. Install Requirements
+pip3 install -r requirements.txt
+```
+
 ## Current Status
 
-__Development__
+### *Development*
+
+See the [CHANGELOG](https://github.com/um-computacion-tm/scrabble-2023-EVAnci/blob/main/CHANGELOG.md) for more detail.
+
+| *_CircleCI_* | *_Main branch_* | *_Develop branch_* |
+| :---:   | :---:   | :---: |
+| Status | [![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main) | [![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop) |
+
+| _*Codeclimate*_ | *_Coverage_* | *_Maintainability_* |
+| :---:   | :---:   | :---: |
+| Status | [![Test Coverage](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/test_coverage)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/test_coverage) | [![Maintainability](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/maintainability)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/maintainability) |
 
 ## Download
 
@@ -50,25 +71,12 @@ git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
 - The [Wikipedia (EN)](https://en.wikipedia.org/wiki/Scrabble)
 - The [Wikipedia (ES)](https://es.wikipedia.org/wiki/Scrabble)
 
-## CircleCI
+The game use a dictionary to validate the legitimacy of words, in case it's not found, uses a RAE API to check them. Words of less than one letter size were removed from the dictionary. Below is the page where I took the words I need and store in a file I create. This file is different because it has word with and without accents.
 
-### Main branch
+- The local [Dictionary](https://mausschool.com/vocabulario-en-espanol/) page source
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/main)
 
-### Develop branch
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/um-computacion-tm/scrabble-2023-EVAnci/tree/develop)
-
-## Codeclimate 
-
-### Mantainability
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/maintainability)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/maintainability)
-
-### Coverage
-
-[![Test Coverage](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/test_coverage)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/test_coverage)
 
 ## Student data
 
