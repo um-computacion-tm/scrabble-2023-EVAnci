@@ -41,6 +41,12 @@ class TestBagTiles(unittest.TestCase):
         self.assertEqual(len(bag.tiles), TOTAL_TILES-2)
         self.assertEqual(len(tiles_taken), 2)
 
+    def test_take_cero(self):
+        bag = BagTiles()
+        tiles_taken = bag.take(0)
+        self.assertEqual(len(bag.tiles), TOTAL_TILES)
+        self.assertEqual(len(tiles_taken), 0)
+
     def test_take_empty(self):
         bag = BagTiles()
         bag.take(TOTAL_TILES)
