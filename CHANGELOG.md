@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.14] - 2023-09-28 (development)
+
+### Added 
+
+- Two dictionary files to validate words in case there is no internet connection (one should be removed).
+
+### Known Issues
+
+- Validation don't work for double letter tiles.
+- The validation of words doesn't work with words with accents
+- view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
+
 ## [0.0.13] - 2023-09-28 (development)
 
 ### Added
