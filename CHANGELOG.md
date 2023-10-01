@@ -4,15 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Status
+## Status: [Unreleased]
 
 Development
 
-## [0.0.14] - 2023-09-28 (development)
+## [0.0.15] - 2023-10-01 
 
 ### Added 
 
-- Two dictionary files to validate words in case there is no internet connection (one should be removed).
+- Refactor of validation methood in board class:
+    - Divided the validation method.
+    - Implemented validation to side words.
+
+### Fixed
+
+- Conjugated verbs validation.
+
+### Known Issues
+
+- Validation don't work for double letter tiles.
+- The validation of words doesn't work with words with accents
+- view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
+- ~~Conjugated verbs had troubles in validation. Consider refactoring.~~
+
+## [0.0.14] - 2023-09-29 
+
+### Added 
+
+- One dictionary file to validate words in case there is no internet connection.
 
 ### Known Issues
 
@@ -20,7 +39,7 @@ Development
 - The validation of words doesn't work with words with accents
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 
-## [0.0.13] - 2023-09-28 (development)
+## [0.0.13] - 2023-09-28 
 
 ### Added
 
@@ -39,7 +58,7 @@ Development
 
 - Validation don't work for double letter tiles.
 
-## [0.0.12] - 2023-09-27 (development)
+## [0.0.12] - 2023-09-27 
 
 ### Added
 
@@ -53,13 +72,13 @@ Development
 
 - Validation don't work for double letter tiles.
 
-## [0.0.11] - 2023-09-12 (development)
+## [0.0.11] - 2023-09-12 
 
 ### Changed
 
 - Upgrade validate_word method in board class to validate words that use other words or letters.
 
-## [0.0.10] - 2023-09-08 (development)
+## [0.0.10] - 2023-09-08 
 
 ### Added
 
@@ -70,7 +89,7 @@ Development
 - Moved _view_lectern_()  funtion to a player method.
 - Moved _view_board_()  funtion to a board method.
 
-## [0.0.9] - 2023-09-06 (development)
+## [0.0.9] - 2023-09-06 
 
 ### Added
 
@@ -86,7 +105,7 @@ Development
 - Some methods like print_board, print_lectern must be in the class it should be.
 - main.py file is ignored by coverage, and is not tested by now
 
-## [0.0.8] - 2023-09-03 (development)
+## [0.0.8] - 2023-09-03 
 
 ### Added
 
@@ -113,7 +132,7 @@ Development
 - main.py file is ignored by coverage, and is not tested by now
 - Wildcard tile hasn't a letter, print lectern get an error printing it
 
-## [0.0.7] - 2023-09-02 (development)
+## [0.0.7] - 2023-09-02 
 
 ### Added
 
@@ -131,7 +150,7 @@ Development
 
 - Cli implementation is incomplete.
 
-## [0.0.6] - 2023-09-01 (development)
+## [0.0.6] - 2023-09-01 
 
 ### Added
 
@@ -142,7 +161,7 @@ Development
 - Cli implementation is incomplete.
 - Test cli isn't working.
 
-## [0.0.5] - 2023-08-30 (development)
+## [0.0.5] - 2023-08-30 
 
 ### Added
 
@@ -154,7 +173,7 @@ Development
 
 - Anything at the moment.
 
-## [0.0.4] - 2023-08-28 (development)
+## [0.0.4] - 2023-08-28 
 
 ### Added
 
@@ -165,7 +184,7 @@ Development
 
 - Add a missing if \_\_name__ == '\_\_main__' to test_player.py file.
 
-## [0.0.3] - 2023-08-25 (development)
+## [0.0.3] - 2023-08-25 
 
 ### Added
 
@@ -177,7 +196,7 @@ Development
 
 - Anything at the moment.
 
-## [0.0.2] - 2023-08-20 (development)
+## [0.0.2] - 2023-08-20 
 
 ### Added
  
@@ -196,7 +215,7 @@ Development
 
 - The full/empty bag message isn't properly implemented.
 
-## [0.0.1] - 2023-08-17 (development)
+## [0.0.1] - 2023-08-17 
 
 ### Added 
 
