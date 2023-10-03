@@ -69,6 +69,17 @@ class Board():
                 word2_is_valid = "Definición" in dle.search_by_word(word2).title
                 if not word2_is_valid:
                     is_valid = -9999
+            elif leftcell is not None and cell is None:
+                word2 = word[i]
+                index = 1
+                while leftcell is not None:
+                    word2 += leftcell.letter.lower()
+                    leftcell = self.grid[pos[0]+i][pos[1]-1-index].tile
+                    index += 1
+                word2 = word2[::-1]
+                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                if not word2_is_valid:
+                    is_valid = -9999
             if cell is not None:
                 intersections += 1
                 if cell.letter == word[i].upper():
