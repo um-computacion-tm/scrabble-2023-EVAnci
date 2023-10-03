@@ -36,6 +36,30 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(player.lectern, ['A', 'Z', 'Y'])
         self.assertEqual(old_tiles, ['B', 'C'])
 
+    def test_search_word(self):
+        player = Player()
+        player.give_tiles([Tile('A',1), Tile('C', 1), Tile('C',1), Tile('S',3), Tile('A',1), Tile('S',3), Tile('G',2)])
+        result = player.search('casa')
+        self.assertEqual(result, True)
+
+    def test_search_word_invalid(self):
+        player = Player()
+        player.give_tiles([Tile('A',1), Tile('C', 1), Tile('C',1), Tile('S',3), Tile('A',1), Tile('S',3), Tile('G',2)])
+        result = player.search('losa')
+        self.assertEqual(result, False)
+
+    def test_search_word_2_same_letter(self):
+        player = Player()
+        player.give_tiles([Tile('Y',1), Tile('C', 1), Tile('C',1), Tile('S',3), Tile('A',1), Tile('G',3), Tile('G',2)])
+        result = player.search('casas')
+        self.assertEqual(result, False)
+
+    def test_search_double_letter_tile_word(self):
+        player = Player()
+        player.give_tiles([Tile('LL',1), Tile('U', 1), Tile('V',1), Tile('I',3), Tile('A',1), Tile('G',3), Tile('G',2)])
+        result = player.search('lluvia')
+        self.assertEqual(result, True)
+
     def test_print_lectern(self):
         player = Player()
         tiles = []

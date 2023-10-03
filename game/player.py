@@ -17,6 +17,20 @@ class Player:
             self.lectern[old_tiles_index[i]-1] = new_tiles[i]
         return old_tiles
 
+    def search(self, word):
+        word = word.upper()
+        lectern = self.lectern
+        valid = 0
+        for letter in word:
+            for tile in lectern:
+                if letter == tile.letter:
+                    valid += 1
+                    lectern.remove(tile)
+                    break
+        if valid == len(word):
+            return True
+        return False
+
     def view_lectern(self):
         view = '                     ATRIL\n\n'
         view += f'Letras -> '
