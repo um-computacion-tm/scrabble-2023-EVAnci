@@ -47,6 +47,8 @@ source env/bin/activate
 pip3 install -r requirements.txt
 ```
 
+This will also install all the dependences needed.
+
 ## Current Status
 
 ### *Development*
@@ -74,9 +76,6 @@ git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
 The game use a dictionary to validate the legitimacy of words, in case it's not found, uses a RAE API to check them. Words of less than one letter size were removed from the dictionary. Below is the page where I took the words I need and store in a file I create. This file is different because it has word with and without accents.
 
 - The local [Dictionary](https://mausschool.com/vocabulario-en-espanol/) page source
-
-
-
 
 ## Student data
 

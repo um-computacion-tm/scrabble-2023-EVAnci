@@ -37,26 +37,52 @@ class Board():
                     return True
         return False
 
+    def horizontal_validation(self, word, pos):
+        intersections = 0
+        is_valid = 0
+        for i in range(len(word)):
+            cell = self.grid[pos[0]][pos[1]+i].tile
+            # uppercell = self.grid[pos[0]-1][pos[1]+i].tile
+            # lowercell = self.grid[pos[0]+1][pos[1]+i].tile
+            # word2_is_valid = True
+            if cell is not None:
+                intersections += 1
+                if cell.letter == word[i]:
+                    is_valid += 1
+        return (is_valid, intersections)
+
+    def vertical_validation(self, word, pos):
+        intersections = 0
+        is_valid = 0
+        for i in range(len(word)):
+            cell = self.grid[pos[0]+i][pos[1]].tile
+            leftcell = self.grid[pos[0]+i][pos[1]-1].tile
+            rightcell = self.grid[pos[0]+i][pos[1]+1].tile
+            word2_is_valid = True
+            if rightcell is not None and cell is None:
+                word2 = word[i]
+                index = 1
+                while rightcell is not None:
+                    word2 += rightcell.letter.lower()
+                    rightcell = self.grid[pos[0]+i][pos[1]+1+index].tile
+                    index += 1
+                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                if not word2_is_valid:
+                    is_valid = -9999
+            if cell is not None:
+                intersections += 1
+                if cell.letter == word[i].upper():
+                    is_valid += 1
+        return (is_valid, intersections)
+
     def validate_not_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
-        intersections = 0
-        is_valid = 0
         if (horizontal and h_space):
-            for i in range(len(word)):
-                cell = self.grid[pos[0]][pos[1]+i].tile
-                if cell is not None:
-                    intersections += 1
-                    if cell.letter == word[i]:
-                        is_valid += 1
+            is_valid = self.horizontal_validation(word,pos)
         elif ((not horizontal) and v_space):
-            for i in range(len(word)):
-                cell = self.grid[pos[0]+i][pos[1]].tile
-                if cell is not None:
-                    intersections += 1
-                    if cell.letter == word[i]:
-                        is_valid += 1
-        if is_valid != 0 and intersections == is_valid:
+            is_valid = self.vertical_validation(word,pos)
+        if is_valid[0] != 0 and is_valid[1] == is_valid[0]:
             return True
         else:
             return False
@@ -65,7 +91,7 @@ class Board():
         rae = dle.search_by_word(word)
         if rae == None:
             raise NotInternetConnection
-        if word.lower() in rae.title:
+        if 'Definición' in rae.title:
             if self.is_empty():
                 return self.validate_empty(word, pos, horizontal)
             else:

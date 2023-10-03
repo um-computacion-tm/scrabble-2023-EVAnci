@@ -91,6 +91,44 @@ class Test_Validate_not_empty(unittest.TestCase):
         result = board.validate_not_empty(word,pos=(7,7),horizontal=True)
         self.assertEqual(result, False)
 
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_valid(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'soso, sosa | Definición | Diccionario de la lengua española | RAE - ASALE'
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('A',1)
+        board.grid[6][9].tile = Tile('L',3)
+        board.grid[8][9].tile = Tile('S',6)
+        board.grid[9][9].tile = Tile('O',1)
+        board.grid[9][8].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('O',1)
+        word = 'cosa'
+        horizontal = False
+        pos = (7,6)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, True)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_invalid(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('A',1)
+        board.grid[6][9].tile = Tile('L',3)
+        board.grid[8][9].tile = Tile('S',6)
+        board.grid[9][9].tile = Tile('O',1)
+        board.grid[9][8].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('O',1)
+        word = 'cono'
+        horizontal = False
+        pos = (7,6)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, False)
+
 class Test_Validate(unittest.TestCase):
     @patch('game.board.dle.search_by_word')
     def test_invalid_word(self, mock_search_by_word):
