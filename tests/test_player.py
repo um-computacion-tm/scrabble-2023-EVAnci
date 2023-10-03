@@ -36,6 +36,26 @@ class TestPlayer(unittest.TestCase):
         self.assertEqual(player.lectern, ['A', 'Z', 'Y'])
         self.assertEqual(old_tiles, ['B', 'C'])
 
+    def test_split_word(self):
+        player = Player()
+        splited_word = player.split_word('CASA')
+        self.assertEqual(splited_word, ['C','A','S','A'])
+
+    def test_split_word_with_ll(self):
+        player = Player()
+        splited_word = player.split_word('llano')
+        self.assertEqual(splited_word, ['LL','A','N','O'])
+
+    def test_split_word_with_ch(self):
+        player = Player()
+        splited_word = player.split_word('chamba')
+        self.assertEqual(splited_word, ['CH','A','M','B','A'])
+
+    def test_split_word_with_rr(self):
+        player = Player()
+        splited_word = player.split_word('ferro')
+        self.assertEqual(splited_word, ['F','E','RR','O'])
+
     def test_search_word(self):
         player = Player()
         player.give_tiles([Tile('A',1), Tile('C', 1), Tile('C',1), Tile('S',3), Tile('A',1), Tile('S',3), Tile('G',2)])

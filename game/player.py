@@ -17,8 +17,28 @@ class Player:
             self.lectern[old_tiles_index[i]-1] = new_tiles[i]
         return old_tiles
 
-    def search(self, word):
+    def split_word(self,word):
         word = word.upper()
+        if 'CH' in word:
+            word = word.replace('CH','1')
+        elif 'LL' in word:
+            word =word.replace('LL','2')
+        elif 'RR' in word:
+            word = word.replace('RR', '3')
+        result_word = []
+        for letter in word:
+            if letter == '1':
+                result_word.append('CH')
+            elif letter == '2':
+                result_word.append('LL')
+            elif letter == '3':
+                result_word.append('RR')
+            else:
+                result_word.append(letter)
+        return result_word
+
+    def search(self, word):
+        word = self.split_word(word)
         lectern = self.lectern
         valid = 0
         for letter in word:

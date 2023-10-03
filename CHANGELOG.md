@@ -8,6 +8,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.0.15] - 2023-10-03 
+
+### Added 
+
+- Add search method to player class.
+
+### Fixed
+
+- Search method in player class work to validate 'LL', 'RR' and 'CH'.
+
+### Known Issues
+
+- ~~Validation don't work for double letter tiles.~~
+- The validation of words doesn't work with words with accents
+- view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
+
 ## [0.0.15] - 2023-10-01 
 
 ### Added 
@@ -15,6 +31,12 @@ Development
 - Refactor of validation methood in board class:
     - Divided the validation method.
     - Implemented validation to side words.
+
+### Known Issues
+
+- Validation don't work for double letter tiles.
+- The validation of words doesn't work with words with accents
+- view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 
 ### Fixed
 
