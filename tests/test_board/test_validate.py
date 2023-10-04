@@ -15,13 +15,13 @@ class Test_Validate_empty(unittest.TestCase):
         word = 'CASA'
         result = board.validate_empty(word,pos=(8,7),horizontal=True)
         self.assertEqual(result, False)
-    
-    def test_horizontal_out_of_range(self):
-        board = Board()
-        word = 'FACULTADES'
-        result = board.validate_empty(word,pos=(7,7),horizontal=True)
-        self.assertEqual(result, False)
 
+    def test_horizontal_left_pos(self):
+        board = Board()
+        word = 'CASA'
+        result = board.validate_empty(word,pos=(7,4),horizontal=True)
+        self.assertEqual(result, True)
+    
     def test_vertical_centred(self):
         board = Board()
         word = 'CASA'
@@ -34,11 +34,11 @@ class Test_Validate_empty(unittest.TestCase):
         result = board.validate_empty(word,pos=(7,8),horizontal=False)
         self.assertEqual(result, False)
 
-    def test_vertical_out_of_range(self):
+    def test_horizontal_upper_pos(self):
         board = Board()
-        word = 'FACULTADES'
-        result = board.validate_empty(word,pos=(7,7),horizontal=False)
-        self.assertEqual(result, False)
+        word = 'CASA'
+        result = board.validate_empty(word,pos=(4,7),horizontal=False)
+        self.assertEqual(result, True)
 
 class Test_Validate_not_empty(unittest.TestCase):
     def test_one_valid_intesection(self):
