@@ -69,6 +69,20 @@ See the [CHANGELOG](https://github.com/um-computacion-tm/scrabble-2023-EVAnci/bl
 git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
 ```
 
+## Classes work flow
+
+Here is a simple flow of classes communication:
+
+```mermaid
+graph TD;
+    main.py-->Scrabble;
+    Scrabble-->Tile;
+    Scrabble-->Player;
+    Scrabble-->Board;
+    Board-->Cell;
+    Cell-->Tile;
+```
+
 ## Sources
 - The [Wikipedia (EN)](https://en.wikipedia.org/wiki/Scrabble)
 - The [Wikipedia (ES)](https://es.wikipedia.org/wiki/Scrabble)
