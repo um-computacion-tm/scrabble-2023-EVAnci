@@ -189,6 +189,89 @@ class Test_Validate_not_empty(unittest.TestCase):
     #     is_valid = board.validate_not_empty(word, pos, horizontal)
     #     self.assertEqual(is_valid, True)
 
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_valid_lower(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'soso, sosa | Definición | Diccionario de la lengua española | RAE - ASALE'
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('A',1)
+        board.grid[9][6].tile = Tile('L',3)
+        board.grid[9][8].tile = Tile('S',6)
+        board.grid[9][9].tile = Tile('O',1)
+        board.grid[8][9].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('O',1)
+        word = 'cosa'
+        horizontal = True
+        pos = (6,7)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, True)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_invalid_lower(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('A',1)
+        board.grid[9][6].tile = Tile('L',3)
+        board.grid[9][8].tile = Tile('S',6)
+        board.grid[9][9].tile = Tile('O',1)
+        board.grid[8][9].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('O',1)
+        word = 'cono'
+        horizontal = True
+        pos = (6,7)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, False)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_valid_up(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'osos | Definición | Diccionario de la lengua española | RAE - ASALE'  
+        board = Board()
+        board.grid[4][7].tile = Tile('C',3)
+        board.grid[5][7].tile = Tile('A',1)
+        board.grid[6][7].tile = Tile('S',6)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',6)
+        board.grid[5][6].tile = Tile('L',3)
+        board.grid[5][8].tile = Tile('S',6)
+        board.grid[5][9].tile = Tile('O',1)
+        board.grid[6][9].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('O',1)
+        # print(board.view())
+        word = 'casos'
+        horizontal = True
+        pos = (8,5)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        # board.put_word([Tile('C',1),Tile('A',1),Tile('S',1),Tile('O',1),Tile('S',1)],pos,horizontal)
+        # print(board.view())
+        self.assertEqual(is_valid, True)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_invalid_up(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        board = Board()
+        board.grid[4][7].tile = Tile('C',3)
+        board.grid[5][7].tile = Tile('A',1)
+        board.grid[6][7].tile = Tile('S',6)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',6)
+        board.grid[5][6].tile = Tile('L',3)
+        board.grid[5][8].tile = Tile('S',6)
+        board.grid[5][9].tile = Tile('O',1)
+        board.grid[6][9].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('O',1)
+        word = 'sopa'
+        horizontal = True
+        pos = (8,7)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        # board.put_word([Tile('S',1),Tile('O',1),Tile('P',1),Tile('A',1)],pos,horizontal)
+        # print(board.view())
+        self.assertEqual(is_valid, False)
+
 class Test_Validate(unittest.TestCase):
     @patch('game.board.dle.search_by_word')
     def test_invalid_word(self, mock_search_by_word):
