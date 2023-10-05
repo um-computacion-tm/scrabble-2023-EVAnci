@@ -41,12 +41,33 @@ class Board():
         is_valid = 0
         for i in range(len(word)):
             cell = self.grid[pos[0]][pos[1]+i].tile
-            # uppercell = self.grid[pos[0]-1][pos[1]+i].tile
-            # lowercell = self.grid[pos[0]+1][pos[1]+i].tile
-            # word2_is_valid = True
+            uppercell = self.grid[pos[0]-1][pos[1]+i].tile
+            lowercell = self.grid[pos[0]+1][pos[1]+i].tile
+            word2_is_valid = True
+            if lowercell is not None and cell is None:
+                word2 = word[i]
+                index = 1
+                while lowercell is not None:
+                    word2 += lowercell.letter.lower()
+                    lowercell = self.grid[pos[0]+1+index][pos[1]+i].tile
+                    index += 1
+                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                if not word2_is_valid:
+                    is_valid = -9999
+            elif uppercell is not None and cell is None:
+                word2 = word[i]
+                index = 1
+                while uppercell is not None:
+                    word2 += uppercell.letter.lower()
+                    uppercell = self.grid[pos[0]-1-index][pos[1]+i].tile
+                    index += 1
+                word2 = word2[::-1]
+                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                if not word2_is_valid:
+                    is_valid = -9999
             if cell is not None:
                 intersections += 1
-                if cell.letter == word[i]:
+                if cell.letter == word[i].upper():
                     is_valid += 1
         return (is_valid, intersections)
 
