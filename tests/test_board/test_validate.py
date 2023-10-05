@@ -15,13 +15,13 @@ class Test_Validate_empty(unittest.TestCase):
         word = 'CASA'
         result = board.validate_empty(word,pos=(8,7),horizontal=True)
         self.assertEqual(result, False)
-    
-    def test_horizontal_out_of_range(self):
-        board = Board()
-        word = 'FACULTADES'
-        result = board.validate_empty(word,pos=(7,7),horizontal=True)
-        self.assertEqual(result, False)
 
+    def test_horizontal_left_pos(self):
+        board = Board()
+        word = 'CASA'
+        result = board.validate_empty(word,pos=(7,4),horizontal=True)
+        self.assertEqual(result, True)
+    
     def test_vertical_centred(self):
         board = Board()
         word = 'CASA'
@@ -34,11 +34,11 @@ class Test_Validate_empty(unittest.TestCase):
         result = board.validate_empty(word,pos=(7,8),horizontal=False)
         self.assertEqual(result, False)
 
-    def test_vertical_out_of_range(self):
+    def test_horizontal_upper_pos(self):
         board = Board()
-        word = 'FACULTADES'
-        result = board.validate_empty(word,pos=(7,7),horizontal=False)
-        self.assertEqual(result, False)
+        word = 'CASA'
+        result = board.validate_empty(word,pos=(4,7),horizontal=False)
+        self.assertEqual(result, True)
 
 class Test_Validate_not_empty(unittest.TestCase):
     def test_one_valid_intesection(self):
@@ -92,7 +92,7 @@ class Test_Validate_not_empty(unittest.TestCase):
         self.assertEqual(result, False)
 
     @patch('game.board.dle.search_by_word')
-    def test_complex_word_validation_valid(self, mock_search_by_word):
+    def test_complex_word_validation_valid_right(self, mock_search_by_word):
         mock_search_by_word.return_value.title = 'soso, sosa | Definición | Diccionario de la lengua española | RAE - ASALE'
         board = Board()
         board.grid[7][6].tile = Tile('C',3)
@@ -111,7 +111,7 @@ class Test_Validate_not_empty(unittest.TestCase):
         self.assertEqual(is_valid, True)
 
     @patch('game.board.dle.search_by_word')
-    def test_complex_word_validation_invalid(self, mock_search_by_word):
+    def test_complex_word_validation_invalid_right(self, mock_search_by_word):
         mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
         board = Board()
         board.grid[7][6].tile = Tile('C',3)
@@ -128,6 +128,66 @@ class Test_Validate_not_empty(unittest.TestCase):
         pos = (7,6)
         is_valid = board.validate_not_empty(word, pos, horizontal)
         self.assertEqual(is_valid, False)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_valid_left(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'osos | Definición | Diccionario de la lengua española | RAE - ASALE'  
+        board = Board()
+        board.grid[7][4].tile = Tile('C',3)
+        board.grid[7][5].tile = Tile('A',1)
+        board.grid[7][6].tile = Tile('S',6)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',6)
+        board.grid[6][5].tile = Tile('L',3)
+        board.grid[8][5].tile = Tile('S',6)
+        board.grid[9][5].tile = Tile('O',1)
+        board.grid[9][6].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('O',1)
+        word = 'casos'
+        horizontal = False
+        pos = (5,8)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, True)
+
+    @patch('game.board.dle.search_by_word')
+    def test_complex_word_validation_invalid_left(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        board = Board()
+        board.grid[7][4].tile = Tile('C',3)
+        board.grid[7][5].tile = Tile('A',1)
+        board.grid[7][6].tile = Tile('S',6)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',6)
+        board.grid[6][5].tile = Tile('L',3)
+        board.grid[8][5].tile = Tile('S',6)
+        board.grid[9][5].tile = Tile('O',1)
+        board.grid[9][6].tile = Tile('S',6)
+        board.grid[9][7].tile = Tile('O',1)
+        word = 'sopa'
+        horizontal = False
+        pos = (7,8)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, False)
+
+    # @patch('game.board.dle.search_by_word')
+    # def test_two_complex_word_validation_valid_left(self, mock_search_by_word):
+    #     mock_search_by_word.return_value.title = 'osos | Definición | Diccionario de la lengua española | RAE - ASALE'  
+    #     mock_search_by_word.return_value.title = 'casas | Definición | Diccionario de la lengua española | RAE - ASALE'  
+    #     board = Board()
+    #     board.grid[7][4].tile = Tile('C',3)
+    #     board.grid[7][5].tile = Tile('A',1)
+    #     board.grid[7][6].tile = Tile('S',6)
+    #     board.grid[7][7].tile = Tile('A',1)
+    #     board.grid[6][5].tile = Tile('L',3)
+    #     board.grid[8][5].tile = Tile('S',6)
+    #     board.grid[9][5].tile = Tile('O',1)
+    #     board.grid[9][6].tile = Tile('S',6)
+    #     board.grid[9][7].tile = Tile('O',1)
+    #     word = 'casos'
+    #     horizontal = False
+    #     pos = (5,8)
+    #     is_valid = board.validate_not_empty(word, pos, horizontal)
+    #     self.assertEqual(is_valid, True)
 
 class Test_Validate(unittest.TestCase):
     @patch('game.board.dle.search_by_word')

@@ -25,16 +25,15 @@ class Board():
         return False
 
     def validate_empty(self, word, pos, horizontal):
-        h_space = len(word) <= len(self.grid)-pos[0]
-        v_space = len(word) <= len(self.grid)-pos[1]
-        if (horizontal and h_space and pos[0]==7):
-            for i in range(len(word)):
-                if pos[1] + i == 7:
-                    return True
-        elif (not horizontal and v_space and pos[1]==7):
-            for i in range(len(word)):
-                if pos[0] + i == 7:
-                    return True
+        row = pos[0]
+        column = pos[1]
+        for i in range(len(word)):
+            if row == 7 and column == 7:
+                return True
+            if horizontal:
+                column += 1
+            else:
+                row +=1
         return False
 
     def horizontal_validation(self, word, pos):
@@ -66,6 +65,17 @@ class Board():
                     word2 += rightcell.letter.lower()
                     rightcell = self.grid[pos[0]+i][pos[1]+1+index].tile
                     index += 1
+                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                if not word2_is_valid:
+                    is_valid = -9999
+            elif leftcell is not None and cell is None:
+                word2 = word[i]
+                index = 1
+                while leftcell is not None:
+                    word2 += leftcell.letter.lower()
+                    leftcell = self.grid[pos[0]+i][pos[1]-1-index].tile
+                    index += 1
+                word2 = word2[::-1]
                 word2_is_valid = "Definición" in dle.search_by_word(word2).title
                 if not word2_is_valid:
                     is_valid = -9999

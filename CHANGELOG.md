@@ -12,7 +12,11 @@ Development
 
 ### Added 
 
-- Add search method to player class.
+- Player class:
+    - search method.
+    - split_word method.
+- Board class:
+    - Complete vertical_validate.
 
 ### Fixed
 
