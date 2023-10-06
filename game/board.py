@@ -18,11 +18,15 @@ class Board():
             cell.active = False
         points = points * word_multiplier
         return points
+    
+    def rae_search(self, word):
+        rae = dle.search_by_word(word)
+        if rae is None:
+            raise NotInternetConnection
+        return 'D' != rae.title[:1]
 
     def is_empty(self):
-        if self.grid[7][7].tile is None:
-            return True
-        return False
+        return self.grid[7][7].tile is None
 
     def validate_empty(self, word, pos, horizontal):
         row = pos[0]
@@ -39,97 +43,125 @@ class Board():
     def horizontal_validation(self, word, pos):
         intersections = 0
         is_valid = 0
+        grid = self.grid
+        def validate_side_cell(cell, index_increment):
+            nonlocal is_valid, intersections
+            word2 = word[i]
+            index = 1
+            while cell:
+                word2 += cell.letter.lower()
+                side_words.append(cell)
+                cell = grid[pos[0] + index_increment * index][pos[1] + i].tile
+                index += 1
+            word2_is_valid = self.rae_search(word2)
+            if not word2_is_valid:
+                is_valid = -9999
+            else:
+                is_valid += 1
+                intersections += 1
         for i in range(len(word)):
-            cell = self.grid[pos[0]][pos[1]+i].tile
-            uppercell = self.grid[pos[0]-1][pos[1]+i].tile
-            lowercell = self.grid[pos[0]+1][pos[1]+i].tile
+            cell = self.grid[pos[0]][pos[1] + i].tile
+            uppercell = self.grid[pos[0] - 1][pos[1] + i].tile
+            lowercell = self.grid[pos[0] + 1][pos[1] + i].tile
             word2_is_valid = True
-            if lowercell is not None and cell is None:
-                word2 = word[i]
-                index = 1
-                while lowercell is not None:
-                    word2 += lowercell.letter.lower()
-                    lowercell = self.grid[pos[0]+1+index][pos[1]+i].tile
-                    index += 1
-                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
-                if not word2_is_valid:
-                    is_valid = -9999
-            elif uppercell is not None and cell is None:
-                word2 = word[i]
-                index = 1
-                while uppercell is not None:
-                    word2 += uppercell.letter.lower()
-                    uppercell = self.grid[pos[0]-1-index][pos[1]+i].tile
-                    index += 1
-                word2 = word2[::-1]
-                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
-                if not word2_is_valid:
-                    is_valid = -9999
-            if cell is not None:
+            side_words = []
+            if cell:
                 intersections += 1
                 if cell.letter == word[i].upper():
                     is_valid += 1
+            elif lowercell:
+                validate_side_cell(lowercell, 1)
+                if is_valid == -9999:
+                    break
+            elif uppercell:
+                validate_side_cell(uppercell, -1)
+                if is_valid == -9999:
+                    break    
         return (is_valid, intersections)
 
     def vertical_validation(self, word, pos):
         intersections = 0
         is_valid = 0
+        grid = self.grid
+        def validate_side_cell(cell, index_increment):
+            nonlocal is_valid, intersections
+            word2 = word[i]
+            index = 1
+            while cell:
+                word2 += cell.letter.lower()
+                side_words.append(cell)
+                cell = grid[pos[0] + i][pos[1] + index_increment * index].tile
+                index += 1
+            word2_is_valid = self.rae_search(word2)
+            if not word2_is_valid:
+                is_valid = -9999
+            else:
+                is_valid += 1
+                intersections += 1
         for i in range(len(word)):
-            cell = self.grid[pos[0]+i][pos[1]].tile
-            leftcell = self.grid[pos[0]+i][pos[1]-1].tile
-            rightcell = self.grid[pos[0]+i][pos[1]+1].tile
+            cell = grid[pos[0] + i][pos[1]].tile
+            leftcell = grid[pos[0] + i][pos[1] - 1].tile
+            rightcell = grid[pos[0] + i][pos[1] + 1].tile
             word2_is_valid = True
-            quantity_of_valid_word2 = 0
             side_words = []
-            if rightcell is not None and cell is None:
-                word2 = word[i]
-                index = 1
-                while rightcell is not None:
-                    word2 += rightcell.letter.lower()
-                    side_words.append(rightcell)
-                    rightcell = self.grid[pos[0]+i][pos[1]+1+index].tile
-                    index += 1
-                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
-                if not word2_is_valid:
-                    is_valid = -9999
-                    break
-                else:
-                    quantity_of_valid_word2 += 1
-                    is_valid += 1
-                    intersections += 1
-            elif leftcell is not None and cell is None:
-                word2 = word[i]
-                index = 1
-                while leftcell is not None:
-                    word2 += leftcell.letter.lower()
-                    side_words.append(leftcell)
-                    leftcell = self.grid[pos[0]+i][pos[1]-1-index].tile
-                    index += 1
-                word2 = word2[::-1]
-                print(f'La palabra izq: {word2}')
-                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
-                print(f'Validez: {word2_is_valid}')
-                if not word2_is_valid:
-                    is_valid = -9999
-                    break
-                else:
-                    quantity_of_valid_word2 += 1
-                    is_valid += 1
-                    intersections += 1
-            if cell is not None:
+            if cell:
                 intersections += 1
                 if cell.letter == word[i].upper():
                     is_valid += 1
-        return (is_valid, intersections)
+            elif rightcell:
+                validate_side_cell(rightcell, 1)
+                if is_valid == -9999:
+                    break
+            elif leftcell:
+                validate_side_cell(leftcell, -1)
+                if is_valid == -9999:
+                    break
+        return is_valid, intersections
 
     def validate_not_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
-        if (horizontal and h_space):
-            is_valid = self.horizontal_validation(word,pos)
-        elif ((not horizontal) and v_space):
-            is_valid = self.vertical_validation(word,pos)
-        if is_valid[0] != 0 and is_valid[1] == is_valid[0]:
+        intersections = 0
+        is_valid = 0
+        grid = self.grid
+        def validate_side_cell(cell, index_increment):
+            nonlocal is_valid, intersections
+            word2 = word[i]
+            index = 1
+            while cell:
+                word2 += cell.letter.lower()
+                side_words.append(cell)
+                cell = grid[pos[0] + i + index_increment * index][pos[1] + i].tile
+                index += 1
+            word2_is_valid = self.rae_search(word2)
+            if not word2_is_valid:
+                is_valid = -9999
+            else:
+                is_valid += 1
+                intersections += 1
+
+        for i in range(len(word)):
+            cell = grid[pos[0] + (i if horizontal else 0)][pos[1] + (i if not horizontal else 0)].tile
+            leftcell = grid[pos[0] + i][pos[1] - 1].tile if not horizontal else None
+            rightcell = grid[pos[0] + i][pos[1] + 1].tile if not horizontal else None
+            uppercell = grid[pos[0] - 1][pos[1] + i].tile if horizontal else None
+            lowercell = grid[pos[0] + 1][pos[1] + i].tile if horizontal else None
+            word2_is_valid = True
+            side_words = []
+            if cell:
+                intersections += 1
+                if cell.letter == word[i].upper():
+                    is_valid += 1
+            elif (horizontal and lowercell) or (not horizontal and rightcell):
+                validate_side_cell(lowercell if horizontal else rightcell, 1)
+                if is_valid == -9999:
+                    break
+            elif (horizontal and uppercell) or (not horizontal and leftcell):
+                validate_side_cell(uppercell if horizontal else leftcell, -1)
+                if is_valid == -9999:
+                    break
+
+        if is_valid != 0 and is_valid == intersections:
             return True
         else:
             return False

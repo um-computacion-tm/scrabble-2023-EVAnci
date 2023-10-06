@@ -194,11 +194,11 @@ class Test_Validate_not_empty(unittest.TestCase):
 
     @patch('game.board.dle.search_by_word')
     def test_two_complex_word_validation_invalid_left(self, mock_search_by_word):
-        mock_search_by_word.side_effect = [
-            Mock(title='casas | Definición | Diccionario de la lengua española | RAE - ASALE'),
-            Mock(title='Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE')
-        ]
-        # mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        # mock_search_by_word.side_effect = [
+        #     Mock(title='casas | Definición | Diccionario de la lengua española | RAE - ASALE'),
+        #     Mock(title='Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE')
+        # ]
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
         board = Board()
         board.grid[7][4].tile = Tile('C',3)
         board.grid[7][5].tile = Tile('A',1)
@@ -209,13 +209,13 @@ class Test_Validate_not_empty(unittest.TestCase):
         board.grid[9][5].tile = Tile('O',1)
         board.grid[9][6].tile = Tile('S',6)
         board.grid[9][7].tile = Tile('O',1)
-        print(board.view())
+        # print(board.view())
         word = 'remos'
         horizontal = False
         pos = (5,8)
         is_valid = board.validate_not_empty(word, pos, horizontal)
-        board.put_word([Tile('R',1),Tile('E',1),Tile('M',1),Tile('O',1),Tile('S',1)],pos,horizontal)
-        print(board.view())
+        # board.put_word([Tile('R',1),Tile('E',1),Tile('M',1),Tile('O',1),Tile('S',1)],pos,horizontal)
+        # print(board.view())
         self.assertEqual(is_valid, False)
 
     @patch('game.board.dle.search_by_word')
