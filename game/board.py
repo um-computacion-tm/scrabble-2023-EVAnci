@@ -7,6 +7,7 @@ class NotInternetConnection(Exception):
 class Board():
     def __init__(self):
         self.grid = [[Cell(1, '') for _ in range(15)] for _ in range(15)]
+        dle.set_log_level(log_level='CRITICAL')
 
     def calculate_word_value(self, word):
         points = 0
@@ -40,84 +41,6 @@ class Board():
                 row +=1
         return False
 
-    def horizontal_validation(self, word, pos):
-        intersections = 0
-        is_valid = 0
-        grid = self.grid
-        def validate_side_cell(cell, index_increment):
-            nonlocal is_valid, intersections
-            word2 = word[i]
-            index = 1
-            while cell:
-                word2 += cell.letter.lower()
-                side_words.append(cell)
-                cell = grid[pos[0] + index_increment * index][pos[1] + i].tile
-                index += 1
-            word2_is_valid = self.rae_search(word2)
-            if not word2_is_valid:
-                is_valid = -9999
-            else:
-                is_valid += 1
-                intersections += 1
-        for i in range(len(word)):
-            cell = self.grid[pos[0]][pos[1] + i].tile
-            uppercell = self.grid[pos[0] - 1][pos[1] + i].tile
-            lowercell = self.grid[pos[0] + 1][pos[1] + i].tile
-            word2_is_valid = True
-            side_words = []
-            if cell:
-                intersections += 1
-                if cell.letter == word[i].upper():
-                    is_valid += 1
-            elif lowercell:
-                validate_side_cell(lowercell, 1)
-                if is_valid == -9999:
-                    break
-            elif uppercell:
-                validate_side_cell(uppercell, -1)
-                if is_valid == -9999:
-                    break    
-        return (is_valid, intersections)
-
-    def vertical_validation(self, word, pos):
-        intersections = 0
-        is_valid = 0
-        grid = self.grid
-        def validate_side_cell(cell, index_increment):
-            nonlocal is_valid, intersections
-            word2 = word[i]
-            index = 1
-            while cell:
-                word2 += cell.letter.lower()
-                side_words.append(cell)
-                cell = grid[pos[0] + i][pos[1] + index_increment * index].tile
-                index += 1
-            word2_is_valid = self.rae_search(word2)
-            if not word2_is_valid:
-                is_valid = -9999
-            else:
-                is_valid += 1
-                intersections += 1
-        for i in range(len(word)):
-            cell = grid[pos[0] + i][pos[1]].tile
-            leftcell = grid[pos[0] + i][pos[1] - 1].tile
-            rightcell = grid[pos[0] + i][pos[1] + 1].tile
-            word2_is_valid = True
-            side_words = []
-            if cell:
-                intersections += 1
-                if cell.letter == word[i].upper():
-                    is_valid += 1
-            elif rightcell:
-                validate_side_cell(rightcell, 1)
-                if is_valid == -9999:
-                    break
-            elif leftcell:
-                validate_side_cell(leftcell, -1)
-                if is_valid == -9999:
-                    break
-        return is_valid, intersections
-
     def validate_not_empty(self, word, pos, horizontal):
         h_space = len(word) <= len(self.grid)-pos[0]
         v_space = len(word) <= len(self.grid)-pos[1]
@@ -139,9 +62,8 @@ class Board():
             else:
                 is_valid += 1
                 intersections += 1
-
         for i in range(len(word)):
-            cell = grid[pos[0] + (i if horizontal else 0)][pos[1] + (i if not horizontal else 0)].tile
+            cell = grid[pos[0] + (i if not horizontal else 0)][pos[1] + (i if horizontal else 0)].tile
             leftcell = grid[pos[0] + i][pos[1] - 1].tile if not horizontal else None
             rightcell = grid[pos[0] + i][pos[1] + 1].tile if not horizontal else None
             uppercell = grid[pos[0] - 1][pos[1] + i].tile if horizontal else None
@@ -154,23 +76,18 @@ class Board():
                     is_valid += 1
             elif (horizontal and lowercell) or (not horizontal and rightcell):
                 validate_side_cell(lowercell if horizontal else rightcell, 1)
-                if is_valid == -9999:
+                if is_valid < 0:
                     break
             elif (horizontal and uppercell) or (not horizontal and leftcell):
                 validate_side_cell(uppercell if horizontal else leftcell, -1)
-                if is_valid == -9999:
+                if is_valid < 0:
                     break
-
         if is_valid != 0 and is_valid == intersections:
             return True
-        else:
-            return False
+        return False
 
     def validate(self, word, pos, horizontal):
-        rae = dle.search_by_word(word)
-        if rae == None:
-            raise NotInternetConnection
-        if 'Diccionario' not in rae.title[:11]:
+        if self.rae_search(word):
             if self.is_empty():
                 return self.validate_empty(word, pos, horizontal)
             else:
@@ -185,10 +102,10 @@ class Board():
             for i in range(len(word)):
                 self.grid[pos[0]+i][pos[1]].tile = word[i]
 
-    def view(self):
+    def __repr__(self):
         view = ('                  TABLERO\n\n')
         view += (' '*8)
-        for i in 'ABCDEFGHIJKLMNL':
+        for i in 'ABCDEFGHIJKLMNO':
             view += (f'{i} ')
         view += '\n'
         for row in range(len(self.grid)):

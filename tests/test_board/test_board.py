@@ -1,5 +1,6 @@
 import unittest
-from game.board import Board
+from unittest.mock import patch
+from game.board import Board, NotInternetConnection
 from game.bagtiles import Tile
 
 class TestBoard(unittest.TestCase):
@@ -39,12 +40,32 @@ class TestBoard(unittest.TestCase):
             word_in_board += board.grid[7+i][7].tile.letter
         self.assertEqual('CASA',word_in_board)
 
+    @patch('game.board.dle.search_by_word')
+    def test_rae_search(self, mock_search_by_word):
+        board = Board()
+        valid_word = 'casa'
+        mock_search_by_word.return_value.title = 'casa | Definición | Diccionario de la lengua española | RAE - ASALE'
+        result1 = board.rae_search(valid_word)
+        mock_search_by_word.return_value.title = 'Diccionario de la lengua española | Edición del Tricentenario | RAE - ASALE'  
+        invalid_word = 'uasffho'
+        result2 = board.rae_search(invalid_word)
+        self.assertEqual(result1, True)
+        self.assertEqual(result2, False)
+
+    @patch('game.board.dle.search_by_word')
+    def test_rae_search_no_internet(self, mock_search_by_word):
+        board = Board()
+        valid_word = 'casa'
+        mock_search_by_word.return_value = None
+        with self.assertRaises(NotInternetConnection):
+            board.rae_search(valid_word)
+
     def test_print_board(self):
         board = Board()
-        actual_output = board.view()
+        actual_output = board.__repr__()
         expected_output = '''                  TABLERO
 
-        A B C D E F G H I J K L M N L 
+        A B C D E F G H I J K L M N O 
   1  |  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
   2  |  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
   3  |  _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 

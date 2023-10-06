@@ -8,6 +8,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.1.1] - 2023-10-06
+
+### Added
+
+- Board class:
+    - Add double intersection support in validation method.
+    - Create a method rae_search to make methods less complex to understand.
+
+### Changed
+
+- Board class:
+    - Horizontal validation and vertical validation fully working.
+    - Refactor validate not empty method and submethods to be just one method.
+
+### Removed
+
+- Board class:
+    - horizontal_validation and vertical_validation method as the code was practically duplicated.
+
+### Fixed
+
+- view method in board class rewritten as to be the \_\_repr__ mehtod
+
+### Known Issues
+
+- The validation of words doesn't work with words with accents
+- ~~view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod~~
+- A complex case with doble side validation isn't working
+- view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
+
 ## [0.1.0] - 2023-10-05
 
 ### Added
@@ -26,7 +56,7 @@ Development
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 - A complex case with doble side validation isn't working
 
-## [0.0.15] - 2023-10-03 
+## [0.0.16] - 2023-10-03 
 
 ### Added 
 
