@@ -51,7 +51,7 @@ class Board():
                     word2 += lowercell.letter.lower()
                     lowercell = self.grid[pos[0]+1+index][pos[1]+i].tile
                     index += 1
-                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
                 if not word2_is_valid:
                     is_valid = -9999
             elif uppercell is not None and cell is None:
@@ -62,7 +62,7 @@ class Board():
                     uppercell = self.grid[pos[0]-1-index][pos[1]+i].tile
                     index += 1
                 word2 = word2[::-1]
-                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
                 if not word2_is_valid:
                     is_valid = -9999
             if cell is not None:
@@ -79,27 +79,43 @@ class Board():
             leftcell = self.grid[pos[0]+i][pos[1]-1].tile
             rightcell = self.grid[pos[0]+i][pos[1]+1].tile
             word2_is_valid = True
+            quantity_of_valid_word2 = 0
+            side_words = []
             if rightcell is not None and cell is None:
                 word2 = word[i]
                 index = 1
                 while rightcell is not None:
                     word2 += rightcell.letter.lower()
+                    side_words.append(rightcell)
                     rightcell = self.grid[pos[0]+i][pos[1]+1+index].tile
                     index += 1
-                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
                 if not word2_is_valid:
                     is_valid = -9999
+                    break
+                else:
+                    quantity_of_valid_word2 += 1
+                    is_valid += 1
+                    intersections += 1
             elif leftcell is not None and cell is None:
                 word2 = word[i]
                 index = 1
                 while leftcell is not None:
                     word2 += leftcell.letter.lower()
+                    side_words.append(leftcell)
                     leftcell = self.grid[pos[0]+i][pos[1]-1-index].tile
                     index += 1
                 word2 = word2[::-1]
-                word2_is_valid = "Definición" in dle.search_by_word(word2).title
+                print(f'La palabra izq: {word2}')
+                word2_is_valid = 'Diccionario' not in dle.search_by_word(word2).title[:11]
+                print(f'Validez: {word2_is_valid}')
                 if not word2_is_valid:
                     is_valid = -9999
+                    break
+                else:
+                    quantity_of_valid_word2 += 1
+                    is_valid += 1
+                    intersections += 1
             if cell is not None:
                 intersections += 1
                 if cell.letter == word[i].upper():
@@ -122,7 +138,7 @@ class Board():
         rae = dle.search_by_word(word)
         if rae == None:
             raise NotInternetConnection
-        if 'Definición' in rae.title:
+        if 'Diccionario' not in rae.title[:11]:
             if self.is_empty():
                 return self.validate_empty(word, pos, horizontal)
             else:
