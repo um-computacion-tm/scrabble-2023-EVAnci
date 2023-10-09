@@ -8,6 +8,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.1.3] - 2023-10-09
+
+### Added
+
+- Tile class:
+    - _\_repr__ method to print the letter of the tile.
+
+- Cell class:
+    - _\_repr__ method to print the letter of the tile in the cell.
+
+- Board class:
+    - Multipliers in the grid
+
+### Changed
+
+- Board class:
+    - Refactor _\_repr__ method to suppor double letter tiles and print cells with multipliers.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
 ## [0.1.2] - 2023-10-07
 
 ### Added

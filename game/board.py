@@ -1,5 +1,6 @@
 from game.cell import Cell
 from pyrae import dle
+from colorama import Back, Back, Style, init
 
 class NotInternetConnection(Exception):
     pass
@@ -8,6 +9,22 @@ class Board():
     def __init__(self):
         self.grid = [[Cell(1, '') for _ in range(15)] for _ in range(15)]
         dle.set_log_level(log_level='CRITICAL')
+        # Local function to put multipiers
+        def put_bonus(pos_list, bonus_type):
+            for pos in pos_list:
+                self.grid[pos[0]][pos[1]] = Cell(multiplier=bonus_type[0], letter_multiplier=bonus_type[1])
+                self.grid[pos[0]][14-pos[1]] = Cell(multiplier=bonus_type[0], letter_multiplier=bonus_type[1])
+                self.grid[14-pos[0]][pos[1]] = Cell(multiplier=bonus_type[0], letter_multiplier=bonus_type[1])
+                self.grid[14-pos[0]][14-pos[1]] = Cell(multiplier=bonus_type[0], letter_multiplier=bonus_type[1])
+        pos_list = [(0,0), (0,7), (7,0)]
+        put_bonus(pos_list, (3, False))
+        pos_list = [(1,1), (2,2), (3,3), (4,4), (7,7)]
+        put_bonus(pos_list, (2, False))
+        pos_list = [(5,1), (5,5), (1,5)]
+        put_bonus(pos_list, (3, True))
+        pos_list = [(0,3), (3,0), (2,6), (6,2), (7, 3), (3, 7), (6, 6)]
+        put_bonus(pos_list, (2, True))
+
 
     def calculate_word_value(self, word):
         points = 0
@@ -103,23 +120,37 @@ class Board():
                 self.grid[pos[0]+i][pos[1]].tile = word[i]
 
     def __repr__(self):
-        view = ('                  TABLERO\n\n')
-        view += (' '*8)
-        for i in 'ABCDEFGHIJKLMNO':
-            view += (f'{i} ')
-        view += '\n'
-        for row in range(len(self.grid)):
-            # if the number is higher than 2 digits, then
+        init()
+        view = (f'\n{" "*43}TABLERO\n\n')
+        index = ('       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15\n')
+        view += (index + '    ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐\n')
+        for row in range(15):
+            #if the number is higher than 2 digits, then
             # you need to erase an space for correct formatting
             if row+1 < 10:
-                view += (f'  {row+1}  |  ')
+                view += (f'  {row+1} ')
             else:
-                view += (f' {row+1}  |  ')
-            for column in range(len(self.grid[row])):
-                try:
-                    view += (f'{self.grid[row][column].tile.letter} ')
-                except:
-                    view += ('_ ')
-            view += '\n'
-        view += '\n'
+                view += (f' {row+1} ')
+            view += '│' 
+            for column in range(15):
+                cell = self.grid[row][column]
+                if row == 7 and column == 7 and cell.tile == None:
+                    view += Back.MAGENTA + f'  ★  {Style.RESET_ALL}│' 
+                else:
+                    if not cell.letter_multiplier and cell.multiplier == 3:
+                        view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                    elif not cell.letter_multiplier and cell.multiplier == 2:
+                        view += Back.MAGENTA + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                    elif cell.letter_multiplier and cell.multiplier == 3:
+                        view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                    elif cell.letter_multiplier and cell.multiplier == 2:
+                        view += Back.CYAN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                    else:
+                        view += cell.__repr__().center(5, ' ') + '│'
+                if column == 14:
+                    view += '\n'
+            if row != 14:
+                view += '    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤\n'
+            else:
+                view += '    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘'
         return view
