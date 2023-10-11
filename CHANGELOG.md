@@ -20,6 +20,7 @@ Development
 
 - Board class:
     - Multipliers in the grid
+    - Colors to grid multipliers
 
 ### Changed
 

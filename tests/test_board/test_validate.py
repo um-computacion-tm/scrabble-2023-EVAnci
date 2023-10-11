@@ -43,7 +43,6 @@ class Test_Validate_empty(unittest.TestCase):
 class Test_Validate_not_empty(unittest.TestCase):
     def test_one_valid_intesection(self):
         board = Board()
-        print(board)
         board.grid[7][7].tile = Tile('C',3)
         board.grid[7][8].tile = Tile('A',1)
         board.grid[7][9].tile = Tile('S',6)

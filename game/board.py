@@ -1,6 +1,6 @@
 from game.cell import Cell
 from pyrae import dle
-from colorama import Back, Back, Style, init
+from colorama import Fore, Back, Style, init
 
 class NotInternetConnection(Exception):
     pass
@@ -135,16 +135,16 @@ class Board():
             for column in range(15):
                 cell = self.grid[row][column]
                 if row == 7 and column == 7 and cell.tile == None:
-                    view += Back.MAGENTA + f'  ★  {Style.RESET_ALL}│' 
+                    view += Back.GREEN + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
                 else:
                     if not cell.letter_multiplier and cell.multiplier == 3:
                         view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
                     elif not cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.MAGENTA + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                        view += Back.YELLOW + Fore.BLACK + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
                     elif cell.letter_multiplier and cell.multiplier == 3:
                         view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
                     elif cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.CYAN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                        view += Back.GREEN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
                     else:
                         view += cell.__repr__().center(5, ' ') + '│'
                 if column == 14:
@@ -152,5 +152,6 @@ class Board():
             if row != 14:
                 view += '    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤\n'
             else:
-                view += '    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘'
+                view += '    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘\n'
+                view += f'{" "*20+Back.RED}3 Palabra{Style.RESET_ALL}{" "*8+Back.YELLOW+Fore.BLACK}2 Palabra{Style.RESET_ALL}{" "*8+Back.BLUE}3 Letra{Style.RESET_ALL}{" "*8+Back.GREEN}2 Letra{Style.RESET_ALL}'
         return view
