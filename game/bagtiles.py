@@ -22,6 +22,9 @@ class Tile:
         self.letter = letter
         self.value = value
 
+    def __repr__(self):
+        return f'{self.letter}'
+
 class Wildcard(Tile):
     def __init__(self):
         super().__init__(letter='?', value=0)
@@ -31,7 +34,7 @@ class Wildcard(Tile):
         for tile in DATA:
             if selection == tile['letter']:
                 self.letter = tile['letter']
-                self.value = tile['points']
+                self.value = 0
 
 class BagTiles:
     def __init__(self):

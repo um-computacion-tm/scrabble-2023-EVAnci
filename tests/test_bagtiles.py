@@ -9,11 +9,15 @@ from game.bagtiles import (
     BagIsFull
 )
 
-class TestTilesCreation(unittest.TestCase):
+class TestTile(unittest.TestCase):
     def test_tile(self):
         tile = Tile('A', 1)
         self.assertEqual(tile.letter, 'A')
         self.assertEqual(tile.value, 1)
+
+    def test_repr(self):
+        tile = Tile('A',1)
+        self.assertEqual(tile.__repr__(), 'A')
 
 class TestWildcardTile(unittest.TestCase):
     def test_wildcard(self):
@@ -25,7 +29,7 @@ class TestWildcardTile(unittest.TestCase):
         wildcard = Wildcard()
         wildcard.select_letter('a')
         self.assertEqual(wildcard.letter, 'A')
-        self.assertEqual(wildcard.value, 1)
+        self.assertEqual(wildcard.value, 0)
 
 class TestBagTiles(unittest.TestCase):
     @patch('random.shuffle') # Mock random.shuffle function

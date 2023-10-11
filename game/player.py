@@ -17,6 +17,15 @@ class Player:
             self.lectern[old_tiles_index[i]-1] = new_tiles[i]
         return old_tiles
 
+    def take(self, letters=[]):
+        return_tiles = []
+        for letter in letters:
+            for tile in self.lectern:
+                if tile.letter == letter:
+                    return_tiles.append(tile)
+                    self.lectern.remove(tile)
+        return return_tiles
+
     def split_word(self,word):
         word = word.upper()
         if 'CH' in word:
@@ -33,6 +42,16 @@ class Player:
                 result_word.append('LL')
             elif letter == '3':
                 result_word.append('RR')
+            elif letter == 'Á':
+                result_word.append('A')
+            elif letter == 'É':
+                result_word.append('E')
+            elif letter == 'Í':
+                result_word.append('I')
+            elif letter == 'Ó':
+                result_word.append('O')
+            elif letter == 'Ú':
+                result_word.append('U')    
             else:
                 result_word.append(letter)
         return result_word
@@ -51,7 +70,7 @@ class Player:
             return True
         return False
 
-    def view_lectern(self):
+    def __repr__(self):
         view = '                     ATRIL\n\n'
         view += f'Letras -> '
         letters = ''

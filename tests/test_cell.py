@@ -35,6 +35,12 @@ class TestCell(unittest.TestCase):
         tile = Tile(letter='p', value=3)
         cell.add_letter(tile=tile)
         self.assertEqual(cell.calculate_value(),3)
+    
+    def test_repr(self):
+        cell = Cell(multiplier=2, letter_multiplier=True, active=False)
+        tile = Tile(letter='P', value=3)
+        cell.add_letter(tile=tile)
+        self.assertEqual(cell.__repr__(),'P')
 
 if __name__ == '__main__':
     unittest.main()

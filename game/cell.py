@@ -17,3 +17,9 @@ class Cell:
             return self.tile.value * self.multiplier
         else:
             return self.tile.value
+
+    def __repr__(self):
+        if self.tile:
+            return f'{self.tile}'
+        else:
+            return ' '

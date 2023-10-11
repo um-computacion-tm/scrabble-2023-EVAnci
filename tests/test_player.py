@@ -80,6 +80,31 @@ class TestPlayer(unittest.TestCase):
         result = player.search('lluvia')
         self.assertEqual(result, True)
 
+    def test_search_word_with_accent_valid(self):
+        player = Player()
+        player.give_tiles([Tile('LL',1), Tile('A', 1), Tile('R',1), Tile('L',3), Tile('B',1), Tile('O',3), Tile('G',2)])
+        result = player.search('árbol')
+        self.assertEqual(result, True)
+
+    def test_search_word_with_accent_invalid(self):
+        player = Player()
+        player.give_tiles([Tile('LL',1), Tile('A', 1), Tile('T',1), Tile('L',3), Tile('B',1), Tile('O',3), Tile('G',2)])
+        result = player.search('árbol')
+        self.assertEqual(result, False)
+
+    def test_search_accent_vocals(self):
+        player = Player()
+        player.give_tiles([Tile('A',1), Tile('E', 1), Tile('I',1), Tile('O',3), Tile('B',1), Tile('O',3), Tile('U',2)])
+        result = player.search('áéíóú')
+        self.assertEqual(result, True)
+
+    def test_take(self):
+        player = Player()
+        player.give_tiles([Tile('C',1), Tile('A', 1), Tile('S',1), Tile('A',3), Tile('B',1), Tile('O',3), Tile('U',2)])
+        result = player.take(['C','A','S','A'])
+        self.assertEqual(len(result),4)
+        self.assertEqual(len(player.lectern),3)
+
     def test_print_lectern(self):
         player = Player()
         tiles = []
@@ -87,13 +112,14 @@ class TestPlayer(unittest.TestCase):
             tiles.append(Tile('A',1))
         tiles.append(Tile('AA',1))
         player.give_tiles(tiles)
-        actual_output = player.view_lectern()
+        actual_output = player.__repr__()
         expected_output = '''                     ATRIL
 
 Letras ->  | A | A | A | A | A | A | AA |
 Indice ->    1   2   3   4   5   6    7
 
 '''
+        self.maxDiff = None
         self.assertEqual(actual_output,expected_output)
 
 
