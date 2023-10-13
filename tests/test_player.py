@@ -98,10 +98,24 @@ class TestPlayer(unittest.TestCase):
         result = player.search('áéíóú')
         self.assertEqual(result, True)
 
+    def test_fill(self):
+        bag = BagTiles()
+        player = Player()
+        player.lectern = [Tile('A', 1)]
+        player.fill(bag)
+        self.assertEqual(len(player.lectern), 7)
+
     def test_take(self):
         player = Player()
         player.give_tiles([Tile('C',1), Tile('A', 1), Tile('S',1), Tile('A',3), Tile('B',1), Tile('O',3), Tile('U',2)])
-        result = player.take(['C','A','S','A'])
+        result = player.take('casa')
+        self.assertEqual(len(result),4)
+        self.assertEqual(len(player.lectern),3)
+
+    def test_take_2(self):
+        player = Player()
+        player.lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        result = player.take('casa')
         self.assertEqual(len(result),4)
         self.assertEqual(len(player.lectern),3)
 
@@ -121,7 +135,6 @@ Indice ->    1   2   3   4   5   6    7
 '''
         self.maxDiff = None
         self.assertEqual(actual_output,expected_output)
-
 
 if __name__ == '__main__':
     unittest.main()

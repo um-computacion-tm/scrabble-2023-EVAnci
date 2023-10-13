@@ -2,6 +2,8 @@ from game.board import Board
 from game.player import Player
 from game.bagtiles import BagTiles
 
+class InvalidWord(Exception):
+    pass
 
 class ScrabbleGame:
     def __init__(self, players_count):
@@ -22,6 +24,22 @@ class ScrabbleGame:
             index = self.players.index(self.current_player) + 1
             self.current_player = self.players[index]
 
+    def play(self, word, pos, horizontal, player):
+        is_valid = self.board.validate(word,pos,horizontal)
+        if is_valid:
+            has_letters = player.search(word)
+            if has_letters:
+                tiles = player.take(word)
+                self.board.put_word(tiles,pos,horizontal)
+                try:
+                    player.fill(self.bag_tiles)
+                except InsufficientTiles:
+                    if len(bag_tiles) != 0:
+                        player.give_tiles(bag_tiles.take(len(bag_tiles)))
+                    else:
+                        print('No quedan fichas en la bolsa...')
+        else:
+            raise InvalidWord
 
     def end_game(self):
         if len(self.bag_tiles.tiles) == 0:

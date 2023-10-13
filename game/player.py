@@ -10,6 +10,10 @@ class Player:
     def give_tiles(self, tiles=[]):
         self.lectern.extend(tiles)
 
+    def fill(self, bag_tiles):
+        size = len(self.lectern) 
+        self.give_tiles(bag_tiles.take(LECTERN_SIZE - size))
+
     def change_tiles(self, old_tiles_index=[], new_tiles=[]):
         old_tiles = []
         for i in range(len(old_tiles_index)):
@@ -17,13 +21,15 @@ class Player:
             self.lectern[old_tiles_index[i]-1] = new_tiles[i]
         return old_tiles
 
-    def take(self, letters=[]):
+    def take(self, word):
+        letters = self.split_word(word)
         return_tiles = []
         for letter in letters:
             for tile in self.lectern:
                 if tile.letter == letter:
                     return_tiles.append(tile)
                     self.lectern.remove(tile)
+                    break
         return return_tiles
 
     def split_word(self,word):
@@ -58,7 +64,7 @@ class Player:
 
     def search(self, word):
         word = self.split_word(word)
-        lectern = self.lectern
+        lectern = self.lectern.copy()
         valid = 0
         for letter in word:
             for tile in lectern:

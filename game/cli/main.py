@@ -1,7 +1,3 @@
-from game.bagtiles import *
-from game.board import * 
-from game.cell import *
-from game.player import *
 from game.scrabble import * 
 from game.cli.menu import *
 from game.cli.validate import *
