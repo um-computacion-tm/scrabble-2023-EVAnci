@@ -1,6 +1,6 @@
 from game.board import Board
 from game.player import Player
-from game.bagtiles import BagTiles
+from game.bagtiles import BagTiles, InsufficientTiles
 
 class InvalidWord(Exception):
     pass
@@ -34,10 +34,8 @@ class ScrabbleGame:
                 try:
                     player.fill(self.bag_tiles)
                 except InsufficientTiles:
-                    if len(bag_tiles) != 0:
-                        player.give_tiles(bag_tiles.take(len(bag_tiles)))
-                    else:
-                        print('No quedan fichas en la bolsa...')
+                    if len(self.bag_tiles.tiles) != 0:
+                        player.give_tiles(self.bag_tiles.take(len(self.bag_tiles.tiles)))
         else:
             raise InvalidWord
 

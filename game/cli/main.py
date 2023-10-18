@@ -25,19 +25,27 @@ while not(end_game):
         selection = None
         while selection != 'pass' and selection != 'play' and selection != 'giveup':
             print(f'Turno del jugador {scrabble.players[turno].number} ({scrabble.players[turno].name})  ')
+            print(f'Cantidad de fichas restantes: {len(scrabble.bag_tiles.tiles)}')
             selection = nav()
             if selection == 'board':
-                print(scrabble.board.view())
+                print(scrabble.board)
             elif selection == 'lectern':
-                print(scrabble.players[turno].view_lectern())
+                print(scrabble.players[turno])
             elif selection == 'points':
                 for i in range(num_of_players):
                     print(f'El jugador {scrabble.players[i].number} ({scrabble.players[i].name}) tiene {scrabble.players[i].points} puntos')
             elif selection == 'play':
-                pass
+                word = input('Palabra: ')
+                row = int(input('Posicion de la fila: '))
+                column = int(input('Posicion de la columna: '))
+                if input('Orientacion [H/V]: ').lower() == 'h':
+                    horizontal = True
+                else:
+                    horizontal = False
+                scrabble.play(word, (row,column), horizontal, scrabble.players[turno])
             elif selection == 'change':
                 print('Atril Actual:')
-                print_lectern(scrabble.players[turno].lectern)
+                print(scrabble.players[turno])
                 quantity = range_input(0,7,'Numero de fichas a reemplazar [cancelar=0]: ')
                 new_tiles = scrabble.bag_tiles.take(quantity)
                 print('Seleccione el indice de las fichas a cambiar:')
@@ -47,7 +55,7 @@ while not(end_game):
                     old_tiles_index.append(tile_index)
                 scrabble.bag_tiles.put(scrabble.players[turno].change_tiles(old_tiles_index, new_tiles))
                 print('Atril Resultante: ')
-                print_lectern(scrabble.players[turno].lectern)
+                print(scrabble.player[turno])
             elif selection == 'pass':
                 pass
             elif selection == 'giveup':

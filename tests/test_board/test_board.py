@@ -8,7 +8,7 @@ TRE = Back.RED + '     ' + Style.RESET_ALL
 TWO = Back.YELLOW + Fore.BLACK + '     ' + Style.RESET_ALL 
 TRL = Back.BLUE + '     ' + Style.RESET_ALL 
 TWL = Back.GREEN + '     ' + Style.RESET_ALL 
-CEN = Back.GREEN + Fore.BLACK + f'  ✛  {Style.RESET_ALL}'
+CEN = Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}'
 
 class TestBoard(unittest.TestCase):
     def test_board_constructor(self):

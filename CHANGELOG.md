@@ -8,7 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
-## [0.2.1] - 2023-12-09
+## [0.2.2] - 2023-10-18
+
+### Changed
+
+- Board class:
+    - Refactor calculate word value method to calculate a word given a string instead of a list of cells
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
+## [0.2.1] - 2023-10-12
 
 ### Added
 
@@ -19,6 +30,10 @@ Development
 
 - Player class:
     - refactor take tiles method, to take tiles from the lectern given a word instead of a list of letters.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
 
 ## [0.2.0] - 2023-10-09
 

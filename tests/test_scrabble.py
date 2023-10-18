@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from game.scrabble import ScrabbleGame
+from game.scrabble import ScrabbleGame, InvalidWord
 from game.bagtiles import Tile
 
 class TestScrabbleGame(unittest.TestCase):
@@ -49,5 +49,30 @@ class TestScrabbleGame(unittest.TestCase):
         self.assertEqual(scrabble.board.grid[7][9].tile.letter, 'S')
         self.assertEqual(scrabble.board.grid[7][10].tile.letter, 'A')
 
+    @patch('game.board.Board.validate')
+    def test_play_invalid_word(self, mock_validate):
+        mock_validate.return_value = False
+        scrabble = ScrabbleGame(players_count = 3)
+        scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        with self.assertRaises(InvalidWord):
+            scrabble.play('laa',(7,7),True,scrabble.players[0])
+
+    @patch('game.board.Board.validate')
+    def test_play_almost_empty_bag(self, mock_validate):
+        mock_validate.return_value = True
+        scrabble = ScrabbleGame(players_count = 3)
+        scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        scrabble.bag_tiles.take(76)
+        scrabble.play('casa',(7,7),True,scrabble.players[0])
+        self.assertEqual(len(scrabble.players[0].lectern),6)
+
+    @patch('game.board.Board.validate')
+    def test_play_empty_bag(self, mock_validate):
+        mock_validate.return_value = True
+        scrabble = ScrabbleGame(players_count = 3)
+        scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        scrabble.bag_tiles.take(79)
+        scrabble.play('casa',(7,7),True,scrabble.players[0])
+        self.assertEqual(len(scrabble.players[0].lectern),3)
 if __name__ == '__main__':
     unittest.main()
