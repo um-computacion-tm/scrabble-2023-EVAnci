@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.2.3] - 2023-10-19
+
+### Changed
+
+- Board class:
+    - Improve calculate word value method to work with different cases of intersection of words.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
 ## [0.2.2] - 2023-10-18
 
 ### Changed
