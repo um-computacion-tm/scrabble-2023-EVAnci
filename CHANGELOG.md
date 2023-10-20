@@ -8,7 +8,63 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
-## [0.1.3] - 2023-10-09
+## [0.2.4] - 2023-10-20
+
+### Added
+
+- Add tool class:
+    - This class has the old validation isolated methods, menu and nav. They were moved to this class to improve modularity.
+- Main class:
+    - class constructor, game method and cli menu and navigation.
+
+### Removed
+
+- Cli Module:
+    - Files that contain isolated methods (validate and menu) as long as they were migrated to new tools file. 
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
+## [0.2.3] - 2023-10-19
+
+### Changed
+
+- Board class:
+    - Improve calculate word value method to work with different cases of intersection of words.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
+## [0.2.2] - 2023-10-18
+
+### Changed
+
+- Board class:
+    - Refactor calculate word value method to calculate a word given a string instead of a list of cells
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
+## [0.2.1] - 2023-10-12
+
+### Added
+
+- Player class:
+    - fill method, to fill the lectern with tiles of the bagtile
+
+### Changed
+
+- Player class:
+    - refactor take tiles method, to take tiles from the lectern given a word instead of a list of letters.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
+## [0.2.0] - 2023-10-09
 
 ### Added
 
@@ -31,7 +87,7 @@ Development
 
 - A complex case with doble side validation isn't working
 
-## [0.1.2] - 2023-10-07
+## [0.1.9] - 2023-10-07
 
 ### Added
 
@@ -51,7 +107,7 @@ Development
 - A complex case with doble side validation isn't working
 - ~~view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod~~
 
-## [0.1.1] - 2023-10-06
+## [0.1.8] - 2023-10-06
 
 ### Added
 
@@ -81,7 +137,7 @@ Development
 - A complex case with doble side validation isn't working
 - view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 
-## [0.1.0] - 2023-10-05
+## [0.1.7] - 2023-10-05
 
 ### Added
 
@@ -99,7 +155,7 @@ Development
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 - A complex case with doble side validation isn't working
 
-## [0.0.16] - 2023-10-03 
+## [0.1.6] - 2023-10-03 
 
 ### Added 
 
@@ -119,7 +175,7 @@ Development
 - The validation of words doesn't work with words with accents
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 
-## [0.0.15] - 2023-10-01 
+## [0.1.5] - 2023-10-01 
 
 ### Added 
 
@@ -144,7 +200,7 @@ Development
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 - ~~Conjugated verbs had troubles in validation. Consider refactoring.~~
 
-## [0.0.14] - 2023-09-29 
+## [0.1.4] - 2023-09-29 
 
 ### Added 
 
@@ -156,7 +212,7 @@ Development
 - The validation of words doesn't work with words with accents
 - view method in board class and view_lectern method in player class should be rewritten as to be the \_\_repr__ mehtod
 
-## [0.0.13] - 2023-09-28 
+## [0.1.3] - 2023-09-28 
 
 ### Added
 
@@ -175,7 +231,7 @@ Development
 
 - Validation don't work for double letter tiles.
 
-## [0.0.12] - 2023-09-27 
+## [0.1.2] - 2023-09-27 
 
 ### Added
 
@@ -189,13 +245,13 @@ Development
 
 - Validation don't work for double letter tiles.
 
-## [0.0.11] - 2023-09-12 
+## [0.1.1] - 2023-09-12 
 
 ### Changed
 
 - Upgrade validate_word method in board class to validate words that use other words or letters.
 
-## [0.0.10] - 2023-09-08 
+## [0.1.0] - 2023-09-08 
 
 ### Added
 

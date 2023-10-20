@@ -2,7 +2,7 @@
 ./__pycache__/*
 */__pycache__/*
 create-json.py
-
+.vscode
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

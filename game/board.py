@@ -1,4 +1,6 @@
 from game.cell import Cell
+from game.player import Player
+from game.bagtiles import DATA
 from pyrae import dle
 from colorama import Fore, Back, Style, init
 
@@ -25,15 +27,52 @@ class Board():
         pos_list = [(0,3), (3,0), (2,6), (6,2), (7, 3), (3, 7), (6, 6)]
         put_bonus(pos_list, (2, True))
 
-
-    def calculate_word_value(self, word):
+    def calculate_word_value(self, word, pos, horizontal, first=True):
+        word = Player().split_word(word)
         points = 0
         word_multiplier = 1
-        for cell in word:
+        i = 0
+        for letter in word:
+            cell = self.grid[pos[0]][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]]
+            if pos[0]>0 and pos[1]>0:
+                invert_cell = (self.grid[pos[0]-1][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]-1])
+            else:
+                invert_cell = None
+            try:
+                side_cell = (self.grid[pos[0]+1][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]+1])
+            except:
+                side_cell = None
+            j = 1
+            if not cell.tile and invert_cell and invert_cell.tile and first:
+                side_word = letter
+                while invert_cell.tile:
+                    side_word += invert_cell.tile.letter
+                    invert_cell = self.grid[pos[0]-1-j][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]-1-j]
+                    j+=1
+                side_word = side_word[::-1]
+                # print(f'Word[{(pos[0]+i,pos[1]-j+1)}]: {side_word} -> points: {self.calculate_word_value(side_word, (pos[0]-j+1,pos[1]+i) if horizontal else (pos[0]+i,pos[1]-j+1), not horizontal, False)}')
+                points += self.calculate_word_value(side_word, (pos[0]-j+1,pos[1]+i) if horizontal else (pos[0]+i,pos[1]-j+1), not horizontal, False)
+            elif not cell.tile and side_cell and side_cell.tile and first:
+                side_word = letter
+                while side_cell.tile:
+                    side_word += side_cell.tile.letter
+                    side_cell = self.grid[pos[0]+1+j][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]+1+j]
+                    j += 1
+                points += self.calculate_word_value(side_word, (pos[0],pos[1]+i) if horizontal else (pos[0]+i,pos[1]), not horizontal, False)
+            for tile in DATA:
+                if letter == tile['letter']:
+                    letter_value = tile['points']
+                    break
             if not(cell.letter_multiplier) and cell.active:
                 word_multiplier *= cell.multiplier
-            points += cell.calculate_value()
-            cell.active = False
+            
+            if cell.letter_multiplier and cell.active:
+                points += letter_value * cell.multiplier
+            else:
+                points += letter_value
+            if first:
+                cell.active = False
+            i += 1
         points = points * word_multiplier
         return points
     
@@ -59,8 +98,6 @@ class Board():
         return False
 
     def validate_not_empty(self, word, pos, horizontal):
-        h_space = len(word) <= len(self.grid)-pos[0]
-        v_space = len(word) <= len(self.grid)-pos[1]
         intersections = 0
         is_valid = 0
         grid = self.grid
@@ -70,7 +107,6 @@ class Board():
             index = 1
             while cell:
                 word2 += cell.letter.lower()
-                side_words.append(cell)
                 cell = grid[pos[0] + i + index_increment * index][pos[1] + i].tile
                 index += 1
             word2_is_valid = self.rae_search(word2)
@@ -85,8 +121,6 @@ class Board():
             rightcell = grid[pos[0] + i][pos[1] + 1].tile if not horizontal else None
             uppercell = grid[pos[0] - 1][pos[1] + i].tile if horizontal else None
             lowercell = grid[pos[0] + 1][pos[1] + i].tile if horizontal else None
-            word2_is_valid = True
-            side_words = []
             if cell:
                 intersections += 1
                 if cell.letter == word[i].upper():
@@ -135,7 +169,7 @@ class Board():
             for column in range(15):
                 cell = self.grid[row][column]
                 if row == 7 and column == 7 and cell.tile == None:
-                    view += Back.GREEN + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
+                    view += Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
                 else:
                     if not cell.letter_multiplier and cell.multiplier == 3:
                         view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
