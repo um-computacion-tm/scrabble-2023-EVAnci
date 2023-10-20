@@ -8,6 +8,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.2.4] - 2023-10-20
+
+### Added
+
+- Add tool class:
+    - This class has the old validation isolated methods, menu and nav. They were moved to this class to improve modularity.
+- Main class:
+    - class constructor, game method and cli menu and navigation.
+
+### Removed
+
+- Cli Module:
+    - Files that contain isolated methods (validate and menu) as long as they were migrated to new tools file. 
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+
 ## [0.2.3] - 2023-10-19
 
 ### Changed

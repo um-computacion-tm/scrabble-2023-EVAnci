@@ -15,6 +15,12 @@ class ScrabbleGame:
             self.players[number].give_tiles(self.bag_tiles.take(7))
         self.current_player = None
 
+    def player_points(self):
+        result = ''
+        for player in self.players:
+            result += f'El jugador {player.number}: ({player.name}) tiene {player.points} puntos\n'
+        return result
+
     def next_turn(self):
         if self.current_player is None:
             self.current_player = self.players[0]
@@ -24,12 +30,14 @@ class ScrabbleGame:
             index = self.players.index(self.current_player) + 1
             self.current_player = self.players[index]
 
-    def play(self, word, pos, horizontal, player):
+    def play(self, word, pos, horizontal):
+        player = self.current_player
         is_valid = self.board.validate(word,pos,horizontal)
         if is_valid:
             has_letters = player.search(word)
             if has_letters:
                 tiles = player.take(word)
+                player.points = self.board.calculate_word_value(word,pos,horizontal)
                 self.board.put_word(tiles,pos,horizontal)
                 try:
                     player.fill(self.bag_tiles)
