@@ -159,5 +159,13 @@ class TestCalculateWordValue(unittest.TestCase):
         value = board.calculate_word_value(word, pos, horizontal)
         self.assertEqual(value!=None, True)
 
+    def test_letter_not_available(self):
+        board = Board()
+        word = 'c?sa'
+        pos = (7,7)
+        horizontal = True
+        value = board.calculate_word_value(word,pos,horizontal)
+        self.assertEqual(value, 10)
+
 if __name__ == '__main__':
     unittest.main()
