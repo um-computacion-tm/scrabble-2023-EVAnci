@@ -176,6 +176,25 @@ class Board():
             for i in range(len(word)):
                 self.grid[pos[0]+i][pos[1]].tile = word[i]
 
+    def repr_wrapper(self,view, row):
+        for column in range(15):
+            cell = self.grid[row][column]
+            if row == 7 and column == 7 and cell.tile == None:
+                view += Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
+            else:
+                if not cell.letter_multiplier and cell.multiplier == 3:
+                    view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif not cell.letter_multiplier and cell.multiplier == 2:
+                    view += Back.YELLOW + Fore.BLACK + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif cell.letter_multiplier and cell.multiplier == 3:
+                    view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif cell.letter_multiplier and cell.multiplier == 2:
+                    view += Back.GREEN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                else:
+                    view += cell.__repr__().center(5, ' ') + '│'
+            view += '\n' if column == 14 else ''
+        return view
+
     def __repr__(self):
         init()
         view = (f'\n{" "*43}TABLERO\n\n')
@@ -189,23 +208,7 @@ class Board():
             else:
                 view += (f' {row+1} ')
             view += '│' 
-            for column in range(15):
-                cell = self.grid[row][column]
-                if row == 7 and column == 7 and cell.tile == None:
-                    view += Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
-                else:
-                    if not cell.letter_multiplier and cell.multiplier == 3:
-                        view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif not cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.YELLOW + Fore.BLACK + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif cell.letter_multiplier and cell.multiplier == 3:
-                        view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.GREEN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    else:
-                        view += cell.__repr__().center(5, ' ') + '│'
-                if column == 14:
-                    view += '\n'
+            view = self.repr_wrapper(view, row)
             if row != 14:
                 view += '    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤\n'
             else:
