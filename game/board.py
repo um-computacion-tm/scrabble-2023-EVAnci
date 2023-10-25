@@ -32,49 +32,72 @@ class Board():
         points = 0
         word_multiplier = 1
         i = 0
+
         for letter in word:
-            cell = self.grid[pos[0]][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]]
-            if pos[0]>0 and pos[1]>0:
-                invert_cell = (self.grid[pos[0]-1][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]-1])
-            else:
-                invert_cell = None
-            try:
-                side_cell = (self.grid[pos[0]+1][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]+1])
-            except:
-                side_cell = None
+            cell, invert_cell, side_cell = self.get_cells(pos, i, horizontal)
+            available = not cell.tile and first
             j = 1
-            if not cell.tile and invert_cell and invert_cell.tile and first:
-                side_word = letter
-                while invert_cell.tile:
-                    side_word += invert_cell.tile.letter
-                    invert_cell = self.grid[pos[0]-1-j][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]-1-j]
-                    j+=1
-                side_word = side_word[::-1]
-                # print(f'Word[{(pos[0]+i,pos[1]-j+1)}]: {side_word} -> points: {self.calculate_word_value(side_word, (pos[0]-j+1,pos[1]+i) if horizontal else (pos[0]+i,pos[1]-j+1), not horizontal, False)}')
-                points += self.calculate_word_value(side_word, (pos[0]-j+1,pos[1]+i) if horizontal else (pos[0]+i,pos[1]-j+1), not horizontal, False)
-            elif not cell.tile and side_cell and side_cell.tile and first:
-                side_word = letter
-                while side_cell.tile:
-                    side_word += side_cell.tile.letter
-                    side_cell = self.grid[pos[0]+1+j][pos[1]+i] if horizontal else self.grid[pos[0]+i][pos[1]+1+j]
-                    j += 1
-                points += self.calculate_word_value(side_word, (pos[0],pos[1]+i) if horizontal else (pos[0]+i,pos[1]), not horizontal, False)
-            for tile in DATA:
-                if letter == tile['letter']:
-                    letter_value = tile['points']
-                    break
-            if not(cell.letter_multiplier) and cell.active:
-                word_multiplier *= cell.multiplier
-            
-            if cell.letter_multiplier and cell.active:
-                points += letter_value * cell.multiplier
-            else:
-                points += letter_value
-            if first:
-                cell.active = False
+
+            if invert_cell and invert_cell.tile and available:
+                side_word, j = self.get_side_word(invert_cell, i, (horizontal,True), pos, letter)
+                points += self.calculate_word_value(side_word, (pos[0] - j + 1, pos[1] + i) if horizontal else (pos[0] + i, pos[1] - j + 1), not horizontal, False)
+            elif side_cell and side_cell.tile and available:
+                side_word, j = self.get_side_word(side_cell, i, (horizontal,False), pos, letter)
+                points += self.calculate_word_value(side_word, (pos[0], pos[1] + i) if horizontal else (pos[0] + i, pos[1]), not horizontal, False)
+            letter_value = self.get_letter_value(letter)
+            word_multiplier, points = self.update_multipliers(cell, letter_value, word_multiplier, points, first)
             i += 1
+
         points = points * word_multiplier
         return points
+
+    def get_cells(self, pos, i, horizontal):
+        cell = self.grid[pos[0]][pos[1] + i] if horizontal else self.grid[pos[0] + i][pos[1]]
+        if pos[0] > 0 and pos[1] > 0:
+            invert_cell = self.grid[pos[0] - 1][pos[1] + i] if horizontal else self.grid[pos[0] + i][pos[1] - 1]
+        else:
+            invert_cell = None
+        try:
+            side_cell = self.grid[pos[0] + 1][pos[1] + i] if horizontal else self.grid[pos[0] + i][pos[1] + 1]
+        except:
+            side_cell = None
+        return cell, invert_cell, side_cell
+
+    def get_side_word(self, cell, i, orientation, pos, letter):
+        horizontal = orientation[0]
+        inverted = orientation[1]
+        k = -1 if inverted else 1
+        side_word = letter
+        j = 1
+        # print(f'Initial pos {pos}')
+        while cell.tile:
+            side_word += cell.tile.letter
+            cell = self.grid[pos[0] + (1 + j)*k][pos[1] + i] if horizontal else self.grid[pos[0] + i][pos[1] + (1 + j)*k]
+            j += 1
+            # print(f'Position {(pos[0] + i,pos[1] - 1 - j)}; Inverted {inverted}; Horizontal {horizontal}')
+        if inverted:
+            side_word = side_word[::-1]
+        return side_word, j
+
+    def get_letter_value(self, letter):
+        for tile in DATA:
+            if letter == tile['letter']:
+                return tile['points']
+        return 0
+
+    def update_multipliers(self, cell, letter_value, word_multiplier, points, first):
+        if not (cell.letter_multiplier) and cell.active:
+            word_multiplier *= cell.multiplier
+
+        if cell.letter_multiplier and cell.active:
+            points += letter_value * cell.multiplier
+        else:
+            points += letter_value
+
+        if first:
+            cell.active = False
+
+        return word_multiplier, points
     
     def rae_search(self, word):
         rae = dle.search_by_word(word)

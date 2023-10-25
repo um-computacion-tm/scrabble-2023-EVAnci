@@ -8,6 +8,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.2.5] - 2023-10-24
+
+### Fixed
+
+- Refactor of calculate word value method to be less complex without losing functionality.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working
+- ~~Calculate word value method in board class is implemented but very complex. Consider refactoring.~~
+
 ## [0.2.4] - 2023-10-20
 
 ### Added
@@ -25,6 +36,7 @@ Development
 ### Known Issues
 
 - A complex case with doble side validation isn't working
+- Calculate word value method in board class is implemented but very complex. Consider refactoring.
 
 ## [0.2.3] - 2023-10-19
 
