@@ -17,6 +17,8 @@ Development
 ### Known Issues
 
 - A complex case with doble side validation isn't working
+- Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.
+- There is a complex logical expression in board class - Line 147~151.
 - ~~Calculate word value method in board class is implemented but very complex. Consider refactoring.~~
 
 ## [0.2.4] - 2023-10-20
