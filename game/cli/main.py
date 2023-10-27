@@ -44,10 +44,7 @@ class Main():
             word = input('Palabra: ')
             row = int(input('Posicion de la fila: '))
             column = int(input('Posicion de la columna: '))
-            if input('Orientacion [H/V]: ').lower() == 'h':
-                horizontal = True
-            else:
-                horizontal = False
+            horizontal = True if input('Orientacion [H/V]: ').lower() == 'h'else False
             try:
                 self.scrabble.play(word, (row,column), horizontal)
                 continue_game = True

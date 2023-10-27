@@ -177,14 +177,16 @@ class Board():
         return result
 
     def put_word(self,word,pos,horizontal):
-        i = 0
-        cell = self.grid[pos[0]][pos[1]].tile
-        while len(word) > i:
-            if horizontal:
-                cell = word[i]
+        j=0
+        for i in range(len(word)):
+            cell = self.grid[pos[0]][pos[1]+i+j] if horizontal else self.grid[pos[0]+i+j][pos[1]]
+            if not cell.tile:
+                cell.tile = word[i]
             else:
-                cell = word[i]
-            cell = self.grid[pos[0]][pos[1]+i].tile if horizontal else self.grid[pos[0]+i][pos[1]].tile
+                cell = self.grid[pos[0]][pos[1]+i+1] if horizontal else self.grid[pos[0]+i+1][pos[1]]
+                cell.tile = word[i]
+                j+=1
+
 
     def repr_wrapper(self,view, row):
         for column in range(15):
