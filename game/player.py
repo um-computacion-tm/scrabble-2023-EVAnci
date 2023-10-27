@@ -5,6 +5,8 @@ class Player:
         self.name = name
         self.number = number
         self.points = points
+        self.times_pass = 0
+        self.giveup = False
         self.lectern = []
 
     def give_tiles(self, tiles=[]):

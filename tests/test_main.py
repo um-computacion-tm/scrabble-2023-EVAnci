@@ -119,5 +119,49 @@ class TestMain(unittest.TestCase):
         sys.stdout = sys.__stdout__
         self.assertEqual(return_value, None)
 
+    @patch('builtins.input', side_effect=['elio','valen',3,1,2,3])
+    @patch('game.cli.main.Tool.range_input', side_effect=[2,3,1,2,3])
+    def test_selection_change(self, mock_input, mock_range_input):
+        output_buffer = io.StringIO()
+        sys.stdout = output_buffer
+        main = Main()
+        mock_change = Mock()
+        mock_put = Mock()
+        main.scrabble.current_player.change_tiles = mock_change
+        main.scrabble.bag_tiles.put = mock_put
+        result = main.selection_change()
+        sys.stdout = sys.__stdout__
+        mock_change.assert_called_once()
+        mock_put.assert_called_once()
+        self.assertEqual(result, 'pass')
+
+    @patch('builtins.input', side_effect=['elio','valen'])
+    @patch('game.cli.main.Tool.range_input', side_effect=[2,0])
+    def test_selection_change_cancel(self, mock_input, mock_range_input):
+        output_buffer = io.StringIO()
+        sys.stdout = output_buffer
+        main = Main()
+        mock_change = Mock()
+        mock_put = Mock()
+        main.scrabble.current_player.change_tiles = mock_change
+        main.scrabble.bag_tiles.put = mock_put
+        result = main.selection_change()
+        sys.stdout = sys.__stdout__
+        self.assertEqual(result, None)
+
+    @patch('builtins.input', side_effect=['elio','valen','palabra',7,7,'H'])
+    @patch('game.cli.main.Tool.range_input', return_value=2)
+    @patch('game.cli.main.ScrabbleGame.end_game', side_effect=[False,True])
+    def test_game(self, mock_input, mock_range_input, mock_end_game):
+        output_buffer = io.StringIO()
+        sys.stdout = output_buffer
+        main = Main()
+        mock_menu = Mock()
+        main.menu = mock_menu
+        main.game()
+        sys.stdout = sys.__stdout__
+        mock_menu.assert_called_once()
+        self.assertNotEqual(main.scrabble.current_player, None)
+
 if __name__ == '__main__':
     unittest.main()
