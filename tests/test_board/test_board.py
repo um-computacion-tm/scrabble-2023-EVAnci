@@ -2,13 +2,7 @@ import unittest
 from unittest.mock import patch
 from game.board import Board, NotInternetConnection
 from game.bagtiles import Tile
-from colorama import Fore, Back, Style, init
-
-TRE = Back.RED + '     ' + Style.RESET_ALL 
-TWO = Back.YELLOW + Fore.BLACK + '     ' + Style.RESET_ALL 
-TRL = Back.BLUE + '     ' + Style.RESET_ALL 
-TWL = Back.GREEN + '     ' + Style.RESET_ALL 
-CEN = Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}'
+from tests.graph import BOARD_OUTPUT
 
 class TestBoard(unittest.TestCase):
     def test_board_constructor(self):
@@ -47,6 +41,72 @@ class TestBoard(unittest.TestCase):
             word_in_board += board.grid[7+i][7].tile.letter
         self.assertEqual('CASA',word_in_board)
 
+    def test_put_word_h_intersections(self):
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',1)
+        board.grid[9][7].tile = Tile('A',1)
+        word = [Tile('L',3), Tile('S',6), Tile('O',1)]
+        location = (7, 6)
+        horizontal = True
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[7][6+i].tile.letter
+        self.assertEqual('LASO',word_in_board)
+
+    def test_put_word_v_intersections(self):
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('A',1)
+        word = [Tile('L',3), Tile('S',6), Tile('O',1)]
+        location = (6, 7)
+        horizontal = False
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[6+i][7].tile.letter
+        self.assertEqual('LASO',word_in_board)
+
+    def test_put_word_h_doble_intersections(self):
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',1)
+        board.grid[9][7].tile = Tile('A',1)
+        board.grid[6][9].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('O',1)
+        board.grid[8][9].tile = Tile('S',1)
+        word = [Tile('L',3), Tile('S',6)]
+        location = (7, 6)
+        horizontal = True
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[7][6+i].tile.letter
+        self.assertEqual('LASO',word_in_board)
+
+    def test_put_word_v_doble_intersections(self):
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('A',1)
+        board.grid[9][6].tile = Tile('S',1)
+        board.grid[9][7].tile = Tile('O',1)
+        board.grid[9][8].tile = Tile('S',1)
+        word = [Tile('L',3), Tile('S',6)]
+        location = (6, 7)
+        horizontal = False
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[6+i][7].tile.letter
+        self.assertEqual('LASO',word_in_board)
+
     @patch('game.board.dle.search_by_word')
     def test_rae_search(self, mock_search_by_word):
         board = Board()
@@ -67,45 +127,30 @@ class TestBoard(unittest.TestCase):
         with self.assertRaises(NotInternetConnection):
             board.rae_search(valid_word)
 
+    def test_get_word_without_intersections_no_intersected(self):
+        board = Board()
+        word = 'laso'
+        pos = (6,7)
+        horizontal = False
+        result_word = board.get_word_without_intersections(word,pos,horizontal)
+        self.assertEqual(result_word,'laso')
+
+    def test_get_word_without_intersections_intersected(self):
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('A',1)
+        word = 'laso'
+        pos = (6,7)
+        horizontal = False
+        result_word = board.get_word_without_intersections(word,pos,horizontal)
+        self.assertEqual(result_word,'lso')
+
     def test_print_board(self):
         board = Board()
         actual_output = board.__repr__()
-        expected_output = f'''
-                                           TABLERO
-
-       1     2     3     4     5     6     7     8     9    10    11    12    13    14    15
-    ┌─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┬─────┐
-  1 │{TRE}│     │     │{TWL}│     │     │     │{TRE}│     │     │     │{TWL}│     │     │{TRE}│
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  2 │     │{TWO}│     │     │     │{TRL}│     │     │     │{TRL}│     │     │     │{TWO}│     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  3 │     │     │{TWO}│     │     │     │{TWL}│     │{TWL}│     │     │     │{TWO}│     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  4 │{TWL}│     │     │{TWO}│     │     │     │{TWL}│     │     │     │{TWO}│     │     │{TWL}│
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  5 │     │     │     │     │{TWO}│     │     │     │     │     │{TWO}│     │     │     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  6 │     │{TRL}│     │     │     │{TRL}│     │     │     │{TRL}│     │     │     │{TRL}│     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  7 │     │     │{TWL}│     │     │     │{TWL}│     │{TWL}│     │     │     │{TWL}│     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  8 │{TRE}│     │     │{TWL}│     │     │     │{CEN}│     │     │     │{TWL}│     │     │{TRE}│
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
-  9 │     │     │{TWL}│     │     │     │{TWL}│     │{TWL}│     │     │     │{TWL}│     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 10 │     │{TRL}│     │     │     │{TRL}│     │     │     │{TRL}│     │     │     │{TRL}│     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 11 │     │     │     │     │{TWO}│     │     │     │     │     │{TWO}│     │     │     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 12 │{TWL}│     │     │{TWO}│     │     │     │{TWL}│     │     │     │{TWO}│     │     │{TWL}│
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 13 │     │     │{TWO}│     │     │     │{TWL}│     │{TWL}│     │     │     │{TWO}│     │     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 14 │     │{TWO}│     │     │     │{TRL}│     │     │     │{TRL}│     │     │     │{TWO}│     │
-    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤
- 15 │{TRE}│     │     │{TWL}│     │     │     │{TRE}│     │     │     │{TWL}│     │     │{TRE}│
-    └─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┴─────┘
-{" "*20+Back.RED}3 Palabra{Style.RESET_ALL}{" "*8+Back.YELLOW+Fore.BLACK}2 Palabra{Style.RESET_ALL}{" "*8+Back.BLUE}3 Letra{Style.RESET_ALL}{" "*8+Back.GREEN}2 Letra{Style.RESET_ALL}'''
+        expected_output = BOARD_OUTPUT
         self.maxDiff = None
         self.assertEqual(actual_output, expected_output)
 

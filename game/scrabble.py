@@ -34,9 +34,11 @@ class ScrabbleGame:
         player = self.current_player
         is_valid = self.board.validate(word,pos,horizontal)
         if is_valid:
-            has_letters = player.search(word)
+            no_intersections_word = self.board.get_word_without_intersections(word,pos,horizontal)
+            player.points += 50 if len(no_intersections_word) == 7 else 0
+            has_letters = player.search(no_intersections_word)
             if has_letters:
-                tiles = player.take(word)
+                tiles = player.take(no_intersections_word)
                 player.points = self.board.calculate_word_value(word,pos,horizontal)
                 self.board.put_word(tiles,pos,horizontal)
                 try:
@@ -48,6 +50,18 @@ class ScrabbleGame:
             raise InvalidWord
 
     def end_game(self):
-        if len(self.bag_tiles.tiles) == 0:
-            return True
-        return False
+        end = False
+        if self.current_player.giveup:
+            end = True
+        elif len(self.bag_tiles.tiles) == 0 and len(self.current_player.lectern) == 0:
+            end = True
+        elif self.current_player.times_pass == 2:
+            end = True
+        if end:
+            for player in self.players:
+                points = 0
+                for tile in player.lectern:
+                    points += tile.value
+                player.points -= points 
+                self.current_player.points += points if len(self.current_player.lectern) == 0 else 0
+        return end

@@ -12,14 +12,56 @@ class TestScrabbleGame(unittest.TestCase):
 
     def test_end_game_false(self):
         scrabble_game = ScrabbleGame(players_count=3)
+        scrabble_game.current_player = scrabble_game.players[0]
         end_game = scrabble_game.end_game()
         self.assertEqual(end_game,False)
 
-    def test_end_game_true(self):
-        scrabble_game = ScrabbleGame(players_count=0)
-        scrabble_game.bag_tiles.take(100)
+    def test_end_game_true_empty_bag_and_lectern(self):
+        scrabble_game = ScrabbleGame(players_count=2)
+        scrabble_game.current_player = scrabble_game.players[0]
+        scrabble_game.bag_tiles.tiles = []
+        scrabble_game.current_player.lectern = []
         end_game = scrabble_game.end_game()
         self.assertEqual(end_game,True)
+
+    def test_end_game_true_pass(self):
+        scrabble_game = ScrabbleGame(players_count=2)
+        scrabble_game.current_player = scrabble_game.players[0]
+        scrabble_game.current_player.times_pass = 2
+        end_game = scrabble_game.end_game()
+        self.assertEqual(end_game,True)
+
+    def test_end_game_true_giveup(self):
+        scrabble_game = ScrabbleGame(players_count=2)
+        scrabble_game.current_player = scrabble_game.players[0]
+        scrabble_game.current_player.giveup = True
+        end_game = scrabble_game.end_game()
+        self.assertEqual(end_game,True)
+
+    def test_end_game_true_add_points_empty_lectern(self):
+        scrabble_game = ScrabbleGame(players_count=2)
+        scrabble_game.current_player = scrabble_game.players[0]
+        scrabble_game.players[1].lectern = [Tile('A',1), Tile('A',1), Tile('A',1), Tile('A',1)]
+        scrabble_game.bag_tiles.tiles = []
+        scrabble_game.current_player.lectern = []
+        scrabble_game.end_game()
+        player0points = scrabble_game.players[0].points
+        player1points = scrabble_game.players[1].points
+        self.assertEqual(player0points,4)
+        self.assertEqual(player1points,-4)
+
+    def test_end_game_true_substract_points_not_empty_lectern(self):
+        scrabble_game = ScrabbleGame(players_count=2)
+        scrabble_game.current_player = scrabble_game.players[0]
+        scrabble_game.current_player.lectern = [Tile('A',1), Tile('A',1), Tile('A',1), Tile('A',1)]
+        scrabble_game.players[1].lectern = [Tile('A',1), Tile('A',1), Tile('A',1), Tile('A',1)]
+        scrabble_game.bag_tiles.tiles = []
+        scrabble_game.current_player.giveup = True
+        scrabble_game.end_game()
+        player0points = scrabble_game.players[0].points
+        player1points = scrabble_game.players[1].points
+        self.assertEqual(player0points,-4)
+        self.assertEqual(player1points,-4)
 
     def test_next_turn_when_game_is_starting(self):
         scrabble_game = ScrabbleGame(players_count=3)

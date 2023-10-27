@@ -1,7 +1,7 @@
 import unittest
-from game.player import Player, LECTERN_SIZE
+from game.player import Player
 from game.bagtiles import BagTiles, Tile
-from unittest.mock import patch
+from tests.graph import LECTERN_OUTPUT
 
 class TestPlayer(unittest.TestCase):
     def test_player_creation(self):
@@ -127,12 +127,7 @@ class TestPlayer(unittest.TestCase):
         tiles.append(Tile('AA',1))
         player.give_tiles(tiles)
         actual_output = player.__repr__()
-        expected_output = '''                     ATRIL
-
-Letras ->  | A | A | A | A | A | A | AA |
-Indice ->    1   2   3   4   5   6    7
-
-'''
+        expected_output = LECTERN_OUTPUT
         self.maxDiff = None
         self.assertEqual(actual_output,expected_output)
 

@@ -168,13 +168,44 @@ class Board():
                 return self.validate_not_empty(word, pos, horizontal)
         return False
 
+    def get_word_without_intersections(self,word,pos,horizontal):
+        result = ''
+        for i in range(len(word)):
+            cell = self.grid[pos[0] + (i if not horizontal else 0)][pos[1] + (i if horizontal else 0)].tile
+            if not cell:
+                result += word[i]
+        return result
+
     def put_word(self,word,pos,horizontal):
-        if horizontal:
-            for i in range(len(word)):
-                self.grid[pos[0]][pos[1]+i].tile = word[i]
-        else:
-            for i in range(len(word)):
-                self.grid[pos[0]+i][pos[1]].tile = word[i]
+        j=0
+        for i in range(len(word)):
+            cell = self.grid[pos[0]][pos[1]+i+j] if horizontal else self.grid[pos[0]+i+j][pos[1]]
+            if not cell.tile:
+                cell.tile = word[i]
+            else:
+                cell = self.grid[pos[0]][pos[1]+i+1] if horizontal else self.grid[pos[0]+i+1][pos[1]]
+                cell.tile = word[i]
+                j+=1
+
+
+    def repr_wrapper(self,view, row):
+        for column in range(15):
+            cell = self.grid[row][column]
+            if row == 7 and column == 7 and cell.tile == None:
+                view += Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
+            else:
+                if not cell.letter_multiplier and cell.multiplier == 3:
+                    view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif not cell.letter_multiplier and cell.multiplier == 2:
+                    view += Back.YELLOW + Fore.BLACK + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif cell.letter_multiplier and cell.multiplier == 3:
+                    view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                elif cell.letter_multiplier and cell.multiplier == 2:
+                    view += Back.GREEN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
+                else:
+                    view += cell.__repr__().center(5, ' ') + '│'
+            view += '\n' if column == 14 else ''
+        return view
 
     def __repr__(self):
         init()
@@ -189,23 +220,7 @@ class Board():
             else:
                 view += (f' {row+1} ')
             view += '│' 
-            for column in range(15):
-                cell = self.grid[row][column]
-                if row == 7 and column == 7 and cell.tile == None:
-                    view += Back.YELLOW + Fore.BLACK + f'  ✛  {Style.RESET_ALL}│' 
-                else:
-                    if not cell.letter_multiplier and cell.multiplier == 3:
-                        view += Back.RED + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif not cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.YELLOW + Fore.BLACK + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif cell.letter_multiplier and cell.multiplier == 3:
-                        view += Back.BLUE + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    elif cell.letter_multiplier and cell.multiplier == 2:
-                        view += Back.GREEN + cell.__repr__().center(5, ' ') + Style.RESET_ALL + '│' 
-                    else:
-                        view += cell.__repr__().center(5, ' ') + '│'
-                if column == 14:
-                    view += '\n'
+            view = self.repr_wrapper(view, row)
             if row != 14:
                 view += '    ├─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┼─────┤\n'
             else:

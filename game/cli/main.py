@@ -1,5 +1,6 @@
 from game.scrabble import ScrabbleGame
 from game.cli.tool import Tool
+import random
 
 class Main():
     def __init__(self):
@@ -19,7 +20,7 @@ class Main():
 
     def menu(self):
         selection = None
-        while selection != 'pass' and selection != 'play' and selection != 'giveup':
+        while selection != 'pass' and selection != 'giveup':
             selection = self.tool.nav()
             if selection == 'board':
                 print(self.scrabble.board)
@@ -29,12 +30,14 @@ class Main():
                 print(self.scrabble.player_points())
             elif selection == 'play':
                 selection = self.selection_play()
+                self.scrabble.current_player.times_pass = 0
             elif selection == 'change':
-                self.selection_change()
+                selection = self.selection_change()
             elif selection == 'pass':
-                pass
+                self.scrabble.current_player.times_pass += 1
             elif selection == 'giveup':
-                pass
+                self.scrabble.current_player.giveup = True
+                self.end() 
             elif selection == 'goback':
                 pass
 
@@ -44,10 +47,7 @@ class Main():
             word = input('Palabra: ')
             row = int(input('Posicion de la fila: '))
             column = int(input('Posicion de la columna: '))
-            if input('Orientacion [H/V]: ').lower() == 'h':
-                horizontal = True
-            else:
-                horizontal = False
+            horizontal = True if input('Orientacion [H/V]: ').lower() == 'h'else False
             try:
                 self.scrabble.play(word, (row,column), horizontal)
                 continue_game = True
@@ -55,21 +55,29 @@ class Main():
                 retry = input('Esa palabra no es valida! Enter para intentalo otra vez o [M] para salir al menu.')
                 if retry.upper() == 'M':
                     return None
-        return 'play'
+        return 'pass'
                 
     def selection_change(self):
         print('Atril Actual:')
         print(self.scrabble.current_player)
         quantity = self.tool.range_input(0,7,'Cantidad de fichas a reemplazar [cancelar=0]: ')
         new_tiles = self.scrabble.bag_tiles.take(quantity)
-        print('Seleccione el indice de las fichas a cambiar:')
+        if quantity > 0:
+            print('Seleccione el indice de las fichas a cambiar:'if quantity < 7 else 'Cambiando todas las fichas...')
+        else:
+            return None
         old_tiles_index = []
         for i in range(quantity):
-            tile_index = self.tool.range_input(1,7,f'    > Indice de ficha N°{i+1}: ')
+            tile_index = self.tool.range_input(1,7,f'    > Indice de ficha N°{i+1}: ') if quantity < 7 else i
             old_tiles_index.append(tile_index)
         self.scrabble.bag_tiles.put(self.scrabble.current_player.change_tiles(old_tiles_index, new_tiles))
+        random.shuffle(self.scrabble.bag_tiles.tiles)
         print('Atril Resultante: ')
         print(self.scrabble.current_player)
+        return 'pass'
+    
+    def end(self):
+        pass
 
     def game(self):
         while not(self.scrabble.end_game()):
@@ -80,6 +88,7 @@ class Main():
             print(f'Turno del jugador {player.number}: ({player.name})')
             self.menu()
             self.scrabble.next_turn()
+        self.end()
 
 if __name__ == '__main__':
     start = Main()

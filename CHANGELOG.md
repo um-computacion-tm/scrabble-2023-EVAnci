@@ -8,6 +8,56 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.2.8] - 2023-10-27
+
+### Added
+
+- Scrabble class:
+    - Add end game coditions.
+- Main class:
+    - Add giveup and pass conditons
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.
+- There is a complex logical expression in board class - Line 147~151.
+
+## [0.2.7] - 2023-10-26
+
+### Added
+
+- Main class:
+    - Add missing tests to main class.
+
+- Graph file that contains the output of lectern and board.
+
+### Changed
+
+- coveragerc file: ignore tests folder.
+- Board class:
+    - Refactor put word, to support intersections.
+- test.sh
+    - codeclimate engines:install was moved inside the if, as to not try to download codeclimate again once it's downloaded.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.
+- There is a complex logical expression in board class - Line 147~151.
+
+## [0.2.6] - 2023-10-25
+
+### Fixed
+
+- Refactor \_\_repr__ method in board class.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.
+- There is a complex logical expression in board class - Line 147~151.
+
 ## [0.2.5] - 2023-10-24
 
 ### Fixed
@@ -17,6 +67,8 @@ Development
 ### Known Issues
 
 - A complex case with doble side validation isn't working
+- Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.
+- There is a complex logical expression in board class - Line 147~151.
 - ~~Calculate word value method in board class is implemented but very complex. Consider refactoring.~~
 
 ## [0.2.4] - 2023-10-20
