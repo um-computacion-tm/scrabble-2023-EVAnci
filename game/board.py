@@ -168,13 +168,23 @@ class Board():
                 return self.validate_not_empty(word, pos, horizontal)
         return False
 
+    def get_word_without_intersections(self,word,pos,horizontal):
+        result = ''
+        for i in range(len(word)):
+            cell = self.grid[pos[0] + (i if not horizontal else 0)][pos[1] + (i if horizontal else 0)].tile
+            if not cell:
+                result += word[i]
+        return result
+
     def put_word(self,word,pos,horizontal):
-        if horizontal:
-            for i in range(len(word)):
-                self.grid[pos[0]][pos[1]+i].tile = word[i]
-        else:
-            for i in range(len(word)):
-                self.grid[pos[0]+i][pos[1]].tile = word[i]
+        i = 0
+        cell = self.grid[pos[0]][pos[1]].tile
+        while len(word) > i:
+            if horizontal:
+                cell = word[i]
+            else:
+                cell = word[i]
+            cell = self.grid[pos[0]][pos[1]+i].tile if horizontal else self.grid[pos[0]+i][pos[1]].tile
 
     def repr_wrapper(self,view, row):
         for column in range(15):

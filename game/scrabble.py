@@ -34,9 +34,10 @@ class ScrabbleGame:
         player = self.current_player
         is_valid = self.board.validate(word,pos,horizontal)
         if is_valid:
-            has_letters = player.search(word)
+            no_intersections_word = self.board.get_word_without_intersections(word,pos,horizontal)
+            has_letters = player.search(no_intersections_word)
             if has_letters:
-                tiles = player.take(word)
+                tiles = player.take(no_intersections_word)
                 player.points = self.board.calculate_word_value(word,pos,horizontal)
                 self.board.put_word(tiles,pos,horizontal)
                 try:

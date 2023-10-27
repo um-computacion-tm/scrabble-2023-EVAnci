@@ -47,6 +47,21 @@ class TestBoard(unittest.TestCase):
             word_in_board += board.grid[7+i][7].tile.letter
         self.assertEqual('CASA',word_in_board)
 
+    def test_put_word_h_intersections(self):
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',1)
+        board.grid[9][7].tile = Tile('A',1)
+        word = [Tile('L',3), Tile('S',6), Tile('O',1)]
+        location = (7, 6)
+        horizontal = True
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(4):
+            word_in_board += board.grid[7+i][6].tile.letter
+        self.assertEqual('LASO',word_in_board)
+
     @patch('game.board.dle.search_by_word')
     def test_rae_search(self, mock_search_by_word):
         board = Board()
@@ -66,6 +81,26 @@ class TestBoard(unittest.TestCase):
         mock_search_by_word.return_value = None
         with self.assertRaises(NotInternetConnection):
             board.rae_search(valid_word)
+
+    def test_get_word_without_intersections_no_intersected(self):
+        board = Board()
+        word = 'laso'
+        pos = (6,7)
+        horizontal = False
+        result_word = board.get_word_without_intersections(word,pos,horizontal)
+        self.assertEqual(result_word,'laso')
+
+    def test_get_word_without_intersections(self):
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('A',1)
+        word = 'laso'
+        pos = (6,7)
+        horizontal = False
+        result_word = board.get_word_without_intersections(word,pos,horizontal)
+        self.assertEqual(result_word,'lso')
 
     def test_print_board(self):
         board = Board()
