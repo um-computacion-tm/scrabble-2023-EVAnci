@@ -84,7 +84,7 @@ class TestMain(unittest.TestCase):
 
     @patch('builtins.input', side_effect=['elio','valen'])
     @patch('game.cli.main.Tool.range_input', return_value=2)
-    @patch('game.cli.main.Tool.nav', side_effect=['change','pass'])
+    @patch('game.cli.main.Tool.nav', side_effect=['goback','change','pass'])
     def test_main_menu_change(self, mock_input, mock_range_input, mock_nav):
         output_buffer = io.StringIO()
         sys.stdout = output_buffer
@@ -92,6 +92,18 @@ class TestMain(unittest.TestCase):
         with patch.object(main, 'selection_change') as mock_change:
             main.menu()
             mock_change.assert_called_once()
+        sys.stdout = sys.__stdout__
+
+    @patch('builtins.input', side_effect=['elio','valen'])
+    @patch('game.cli.main.Tool.range_input', return_value=2)
+    @patch('game.cli.main.Tool.nav', return_value='giveup')
+    def test_main_menu_giveup(self, mock_input, mock_range_input, mock_nav):
+        output_buffer = io.StringIO()
+        sys.stdout = output_buffer
+        main = Main()
+        with patch.object(main, 'end') as mock_end:
+            main.menu()
+            mock_end.assert_called_once()
         sys.stdout = sys.__stdout__
     
     @patch('builtins.input', side_effect=['elio','valen','palabra',7,7,'H'])

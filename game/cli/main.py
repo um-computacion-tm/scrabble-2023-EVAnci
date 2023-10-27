@@ -37,7 +37,7 @@ class Main():
                 self.scrabble.current_player.times_pass += 1
             elif selection == 'giveup':
                 self.scrabble.current_player.giveup = True
-                
+                self.end() 
             elif selection == 'goback':
                 pass
 
