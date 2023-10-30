@@ -107,6 +107,36 @@ class TestBoard(unittest.TestCase):
             word_in_board += board.grid[6+i][7].tile.letter
         self.assertEqual('LASO',word_in_board)
 
+    def test_put_word_add_a_letter_h(self):
+        board = Board()
+        board.grid[7][6].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[7][8].tile = Tile('S',1)
+        board.grid[7][9].tile = Tile('A',1)
+        word = [Tile('S',1)]
+        location = (7, 6)
+        horizontal = True
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(5):
+            word_in_board += board.grid[7][6+i].tile.letter
+        self.assertEqual('CASAS',word_in_board)
+
+    def test_put_word_add_a_letter_v(self):
+        board = Board()
+        board.grid[6][7].tile = Tile('C',3)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',1)
+        board.grid[9][7].tile = Tile('A',1)
+        word = [Tile('S',1)]
+        location = (6, 7)
+        horizontal = False
+        board.put_word(word,location,horizontal)
+        word_in_board = ''
+        for i in range(5):
+            word_in_board += board.grid[6+i][7].tile.letter
+        self.assertEqual('CASAS',word_in_board)
+
     @patch('game.board.dle.search_by_word')
     def test_rae_search(self, mock_search_by_word):
         board = Board()

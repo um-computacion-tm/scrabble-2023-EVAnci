@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-docker_status=$(systemctl status docker | awk 'NR==2 {print $4}' | sed 's/;//g')
-if [ "$docker_status" = "disabled" ]; then
+docker_status=$(systemctl status docker | awk 'NR==3 {print $2}')
+if [ "$docker_status" = "inactive" ]; then
 	systemctl start docker
 fi
 
