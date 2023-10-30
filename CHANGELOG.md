@@ -8,6 +8,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.2.9] - 2023-10-30
+
+### Fixed
+
+- Board class:
+    - Refactor validate not empty method.
+
+- Fix an incorrect logical expresion in test.sh to start docker service if it's inactive.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- ~~Validate not empty method in board class has a cognitive complexity of 44, consider refactoring.~~
+- ~~There is a complex logical expression in board class - Line 147~151.~~
+
+
 ## [0.2.8] - 2023-10-27
 
 ### Added
