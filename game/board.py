@@ -4,6 +4,12 @@ from game.bagtiles import DATA
 from pyrae import dle
 from colorama import Fore, Back, Style, init
 
+DICTIONARY = []
+with open('dictionary', 'r') as dictionary:
+    words = dictionary.readlines()
+for word in words:
+    DICTIONARY.extend(word.split())
+
 class NotInternetConnection(Exception):
     pass
 
@@ -89,10 +95,15 @@ class Board():
         return word_multiplier, points
     
     def rae_search(self, word):
-        rae = dle.search_by_word(word)
-        if rae is None:
-            raise NotInternetConnection
-        return 'D' != rae.title[:1]
+        word = word.lower()
+        print(word)
+        if word in DICTIONARY:
+            return True
+        else:
+            rae = dle.search_by_word(word)
+            if rae is None:
+                raise NotInternetConnection
+            return 'D' != rae.title[:1]
 
     def is_empty(self):
         return self.grid[7][7].tile is None
@@ -113,6 +124,7 @@ class Board():
         grid, word2, index = self.grid, word[i], 1
         while cell:
             word2 += cell.letter.lower()
+            print(f'going {cell.letter} now {pos} then {(pos[0] + i + index_increment * index,pos[1] + i)}')
             cell = grid[pos[0] + i + index_increment * index][pos[1] + i].tile
             index += 1
         word2_is_valid = self.rae_search(word2)

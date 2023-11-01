@@ -39,7 +39,7 @@ class ScrabbleGame:
             has_letters = player.search(no_intersections_word)
             if has_letters:
                 tiles = player.take(no_intersections_word)
-                player.points = self.board.calculate_word_value(word,pos,horizontal)
+                player.points += self.board.calculate_word_value(word,pos,horizontal)
                 self.board.put_word(tiles,pos,horizontal)
                 try:
                     player.fill(self.bag_tiles)

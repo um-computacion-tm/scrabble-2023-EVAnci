@@ -77,7 +77,8 @@ class Main():
         return 'pass'
     
     def end(self):
-        pass
+        winners_result = []
+        print()
 
     def game(self):
         while not(self.scrabble.end_game()):

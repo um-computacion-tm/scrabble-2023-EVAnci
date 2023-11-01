@@ -8,6 +8,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.3.0] - 2023-10-31
+
+### Fixed
+
+- Error while adding point to player in scrabble class.
+    - The points where replaced with the points of the last word instead of being added.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- Wildcard Tile isn't supported yet
+
 ## [0.2.9] - 2023-10-30
 
 ### Fixed
@@ -487,6 +499,6 @@ Development
 
 - The list of 98 tiles.
 
-### Knowm Issues
+### Known Issues
 
 - Anything at the moment.

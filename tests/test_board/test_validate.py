@@ -317,7 +317,7 @@ class Test_Validate(unittest.TestCase):
         mock_search_by_word.return_value = None
         board = Board()
         with self.assertRaises(NotInternetConnection):
-            board.validate(word='CASA',pos=(7,7),horizontal=True)
+            board.validate(word='NOSO',pos=(7,7),horizontal=True)
 
 if __name__ == '__main__':
     unittest.main()

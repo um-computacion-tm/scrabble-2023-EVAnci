@@ -152,7 +152,7 @@ class TestBoard(unittest.TestCase):
     @patch('game.board.dle.search_by_word')
     def test_rae_search_no_internet(self, mock_search_by_word):
         board = Board()
-        valid_word = 'casa'
+        valid_word = 'noso'
         mock_search_by_word.return_value = None
         with self.assertRaises(NotInternetConnection):
             board.rae_search(valid_word)
