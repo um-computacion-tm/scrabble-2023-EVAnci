@@ -96,7 +96,6 @@ class Board():
     
     def rae_search(self, word):
         word = word.lower()
-        print(word)
         if word in DICTIONARY:
             return True
         else:
@@ -119,16 +118,15 @@ class Board():
         return False
 
     def validate_side_cell(self, parameters, validators, cell, index_increment):
-        word, pos, i = parameters[0], parameters[1], parameters[2]
+        letter, pos, horizontal = parameters[0], parameters[1], parameters[2]
         is_valid, intersections = validators[0], validators[1]
-        grid, word2, index = self.grid, word[i], 1
+        grid, side_word, index = self.grid, letter, 1
         while cell:
-            word2 += cell.letter.lower()
-            print(f'going {cell.letter} now {pos} then {(pos[0] + i + index_increment * index,pos[1] + i)}')
-            cell = grid[pos[0] + i + index_increment * index][pos[1] + i].tile
+            side_word += cell.letter.lower()
+            cell = grid[pos[0]+(index*index_increment)][pos[1]].tile if horizontal else grid[pos[0]+(index*index_increment)][pos[1]].tile
             index += 1
-        word2_is_valid = self.rae_search(word2)
-        if not word2_is_valid:
+        side_word_is_valid = self.rae_search(side_word)
+        if not side_word_is_valid:
             is_valid = -9999
         else:
             is_valid += 1
@@ -137,16 +135,16 @@ class Board():
 
     def check_cells(self, cells, parameters, validators):
         cell, sidecell, invertsidecell = cells[0], cells[1], cells[2]
-        word, pos, i = parameters[0], parameters[1], parameters[2]
+        letter, pos, horizontal = parameters[0], parameters[1], parameters[2]
         is_valid, intersections = validators[0], validators[1]
         if cell:
             intersections += 1
-            is_valid += 1 if cell.letter == word[i].upper() else 0
+            is_valid += 1 if cell.letter == letter.upper() else 0
         elif sidecell:
-            result = self.validate_side_cell([word, pos, i], [is_valid, intersections], sidecell, 1)
+            result = self.validate_side_cell([letter, pos, horizontal], [is_valid, intersections], sidecell, 1)
             is_valid, intersections = result[0], result[1]
         elif invertsidecell:
-            result = self.validate_side_cell([word, pos, i], [is_valid, intersections], invertsidecell, -1)
+            result = self.validate_side_cell([word, pos, horizontal], [is_valid, intersections], invertsidecell, -1)
             is_valid, intersections = result[0], result[1]
         return [is_valid, intersections]
 
@@ -158,8 +156,10 @@ class Board():
             cell = grid[pos[0] + (i if not horizontal else 0)][pos[1] + (i if horizontal else 0)].tile
             sidecell = grid[pos[0] + i][pos[1] + 1].tile if not horizontal else grid[pos[0] + 1][pos[1] + i].tile
             invertsidecell = grid[pos[0] + i][pos[1] - 1].tile if not horizontal else grid[pos[0] - 1][pos[1] + i].tile
-            checked = self.check_cells([cell, sidecell, invertsidecell], [word, pos, i], [is_valid, intersections])
-            is_valid, intersections = checked[0], checked[1]
+            if cell or sidecell or invertsidecell:
+                location = (pos[0],pos[1]+i) if horizontal else (pos[0]+i,pos[1])
+                checked = self.check_cells([cell, sidecell, invertsidecell], [word[i], location, horizontal], [is_valid, intersections])
+                is_valid, intersections = checked[0], checked[1]
         return is_valid != 0 and is_valid == intersections
 
     def validate(self, word, pos, horizontal):
