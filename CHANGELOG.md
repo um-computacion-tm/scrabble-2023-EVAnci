@@ -8,6 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 Development
 
+## [0.3.1] - 2023-11-2
+
+### Added
+
+- Support for a local dictionary in case there is no internet connection.
+
+### Fixed
+
+- Board class:
+    - Add support for the complex case with double side validation in validate not empty
+
+### Known Issues
+
+- ~~A complex case with doble side validation isn't working.~~
+- Wildcard Tile isn't supported yet.
+- Try to refactor calculate word value, as to use tiles in board instead of the DATA file.
+
 ## [0.3.0] - 2023-10-31
 
 ### Fixed
@@ -18,7 +35,7 @@ Development
 ### Known Issues
 
 - A complex case with doble side validation isn't working.
-- Wildcard Tile isn't supported yet
+- Wildcard Tile isn't supported yet.
 
 ## [0.2.9] - 2023-10-30
 

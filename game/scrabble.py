@@ -1,4 +1,4 @@
-from game.board import Board
+from game.board import Board, NotInternetConnection
 from game.player import Player
 from game.bagtiles import BagTiles, InsufficientTiles
 
@@ -32,7 +32,10 @@ class ScrabbleGame:
 
     def play(self, word, pos, horizontal):
         player = self.current_player
-        is_valid = self.board.validate(word,pos,horizontal)
+        try:
+            is_valid = self.board.validate(word,pos,horizontal)
+        except NotInternetConnection:
+            is_valid = False
         if is_valid:
             no_intersections_word = self.board.get_word_without_intersections(word,pos,horizontal)
             player.points += 50 if len(no_intersections_word) == 7 else 0

@@ -117,21 +117,14 @@ class Board():
             row += 1 if not horizontal else 0
         return False
 
-    def validate_side_cell(self, parameters, validators, cell, index_increment):
+    def validate_side_cell(self, parameters, cell, index_increment):
         letter, pos, horizontal = parameters[0], parameters[1], parameters[2]
-        is_valid, intersections = validators[0], validators[1]
         grid, side_word, index = self.grid, letter, 1
         while cell:
             side_word += cell.letter.lower()
-            cell = grid[pos[0]+(index*index_increment)][pos[1]].tile if horizontal else grid[pos[0]+(index*index_increment)][pos[1]].tile
             index += 1
-        side_word_is_valid = self.rae_search(side_word)
-        if not side_word_is_valid:
-            is_valid = -9999
-        else:
-            is_valid += 1
-            intersections += 1
-        return [is_valid, intersections]
+            cell = grid[pos[0]+(index*index_increment)][pos[1]].tile if horizontal else grid[pos[0]][pos[1]+(index*index_increment)].tile
+        return side_word
 
     def check_cells(self, cells, parameters, validators):
         cell, sidecell, invertsidecell = cells[0], cells[1], cells[2]
@@ -140,12 +133,20 @@ class Board():
         if cell:
             intersections += 1
             is_valid += 1 if cell.letter == letter.upper() else 0
+            return [is_valid, intersections]
+        elif sidecell and invertsidecell:
+            side_word = self.validate_side_cell([letter, pos, horizontal], invertsidecell, -1)[::-1]
+            side_word += self.validate_side_cell([letter, pos, horizontal], sidecell, 1)[1:]
         elif sidecell:
-            result = self.validate_side_cell([letter, pos, horizontal], [is_valid, intersections], sidecell, 1)
-            is_valid, intersections = result[0], result[1]
+            side_word = self.validate_side_cell([letter, pos, horizontal], sidecell, 1)
         elif invertsidecell:
-            result = self.validate_side_cell([word, pos, horizontal], [is_valid, intersections], invertsidecell, -1)
-            is_valid, intersections = result[0], result[1]
+            side_word = self.validate_side_cell([letter, pos, horizontal], invertsidecell, -1)[::-1]
+        side_word_is_valid = self.rae_search(side_word)
+        if not side_word_is_valid:
+            is_valid = -9999
+        else:
+            is_valid += 1
+            intersections += 1
         return [is_valid, intersections]
 
     def validate_not_empty(self, word, pos, horizontal):

@@ -52,7 +52,8 @@ class Main():
                 self.scrabble.play(word, (row,column), horizontal)
                 continue_game = True
             except:
-                retry = input('Esa palabra no es valida! Enter para intentalo otra vez o [M] para salir al menu.')
+                print('Esa palabra no es valida! Revisa tu conexion a internet si crees que tu palabra es valida.')
+                retry = input('Enter para intentalo otra vez o [M] para salir al menu.')
                 if retry.upper() == 'M':
                     return None
         return 'pass'
