@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 from game.board import Board, NotInternetConnection
 from game.bagtiles import Tile
-import ipdb
+# import ipdb
 
 class Test_Validate_empty(unittest.TestCase):
     def test_horizontal_centred(self):

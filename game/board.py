@@ -154,9 +154,14 @@ class Board():
         is_valid = 0
         grid = self.grid
         for i in range(len(word)):
-            cell = grid[pos[0] + (i if not horizontal else 0)][pos[1] + (i if horizontal else 0)].tile
-            sidecell = grid[pos[0] + i][pos[1] + 1].tile if not horizontal else grid[pos[0] + 1][pos[1] + i].tile
-            invertsidecell = grid[pos[0] + i][pos[1] - 1].tile if not horizontal else grid[pos[0] - 1][pos[1] + i].tile
+            if horizontal:
+                cell = grid[pos[0]][pos[1]+i].tile
+                sidecell = grid[pos[0] + 1][pos[1] + i].tile
+                invertsidecell = grid[pos[0] - 1][pos[1] + i].tile
+            else:
+                cell = grid[pos[0]+i][pos[1]].tile
+                sidecell = grid[pos[0] + i][pos[1] + 1].tile
+                invertsidecell = grid[pos[0] + i][pos[1] - 1].tile
             if cell or sidecell or invertsidecell:
                 location = (pos[0],pos[1]+i) if horizontal else (pos[0]+i,pos[1])
                 checked = self.check_cells([cell, sidecell, invertsidecell], [word[i], location, horizontal], [is_valid, intersections])

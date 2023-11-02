@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from game.scrabble import ScrabbleGame, InvalidWord
+from game.board import NotInternetConnection
 from game.bagtiles import Tile
 
 class TestScrabbleGame(unittest.TestCase):
@@ -105,6 +106,15 @@ El jugador 2: (Mundo) tiene 0 puntos
     @patch('game.board.Board.validate')
     def test_play_invalid_word(self, mock_validate):
         mock_validate.return_value = False
+        scrabble = ScrabbleGame(players_count = 3)
+        scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        scrabble.next_turn()
+        with self.assertRaises(InvalidWord):
+            scrabble.play('laa',(7,7),True)
+
+    @patch('game.board.Board.validate')
+    def test_play_not_internet(self, mock_validate):
+        mock_validate.side_effect = NotInternetConnection
         scrabble = ScrabbleGame(players_count = 3)
         scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
         scrabble.next_turn()
