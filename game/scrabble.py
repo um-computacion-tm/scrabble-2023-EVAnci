@@ -52,6 +52,18 @@ class ScrabbleGame:
         else:
             raise InvalidWord
 
+    def winners(self):
+        winners = self.players.copy()
+        for _ in range(len(winners)-1):
+            for i in range(len(winners)-1):
+                player = winners[i]
+                next_player = winners[i+1]
+                if player.points < next_player.points:
+                    actual = player
+                    winners[i] = next_player
+                    winners[i+1] = actual
+        return winners
+
     def end_game(self):
         end = False
         if self.current_player.giveup:

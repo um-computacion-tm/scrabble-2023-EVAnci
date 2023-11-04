@@ -141,5 +141,14 @@ El jugador 2: (Mundo) tiene 0 puntos
         scrabble.play('casa',(7,7),True)
         self.assertEqual(len(scrabble.players[0].lectern),3)
 
+    def test_winners(self):
+        scrabble = ScrabbleGame(4)
+        scrabble.players[0].points = 20
+        scrabble.players[1].points = 25
+        scrabble.players[2].points = 10
+        scrabble.players[3].points = 40
+        result = scrabble.winners()
+        self.assertEqual(result, [scrabble.players[3],scrabble.players[1],scrabble.players[0],scrabble.players[2]])
+
 if __name__ == '__main__':
     unittest.main()

@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import patch
 from game.board import Board, NotInternetConnection
 from game.bagtiles import Tile
-# import ipdb
 
 class Test_Validate_empty(unittest.TestCase):
     def test_horizontal_centred(self):
@@ -127,7 +126,6 @@ class Test_Validate_not_empty(unittest.TestCase):
         word = 'cono'
         horizontal = False
         pos = (7,6)
-        # ipdb.set_trace()
         is_valid = board.validate_not_empty(word, pos, horizontal)
         self.assertEqual(is_valid, False)
 
@@ -243,7 +241,6 @@ class Test_Validate_not_empty(unittest.TestCase):
         board.grid[8][9].tile = Tile('S',6)
         board.grid[7][9].tile = Tile('O',1)
         word = 'cono'
-        # ipdb.set_trace()
         horizontal = True
         pos = (6,7)
         is_valid = board.validate_not_empty(word, pos, horizontal)
