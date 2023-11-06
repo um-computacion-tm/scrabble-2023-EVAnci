@@ -60,7 +60,7 @@ This will also install all the dependences needed.
 
 ## Current Status
 
-### *Unreleased*
+### *Released*
 
 See the [CHANGELOG](https://github.com/um-computacion-tm/scrabble-2023-EVAnci/blob/main/CHANGELOG.md) for more detail.
 
