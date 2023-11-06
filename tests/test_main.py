@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 from game.cli.main import Main
 from game.bagtiles import Tile
 from tests.graph import BOARD_OUTPUT, LECTERN_OUTPUT
-import ipdb
+# import ipdb
 
 class TestMain(unittest.TestCase):
     @patch('builtins.input', side_effect=['elio','valen'])
