@@ -30,10 +30,16 @@ git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
 
 ## Running the game and coverage
 
-You can run just the following:
+You can run just the following to execute it:
 
 ```bash
 bash play.sh
+```
+
+And this other to remove it:
+
+```bash
+bash remove.sh
 ```
 
 Or if you want to start it manually:
@@ -41,7 +47,7 @@ Or if you want to start it manually:
 1. Build the image with a name:
 
 ```bash
-docker build -t <nombre> .
+docker build -t <my_image_name> .
 ```
 
 2. Run the image:
@@ -72,10 +78,12 @@ Here is a simple flow of classes communication:
 
 ```mermaid
 graph TD;
-    main.py-->Scrabble;
-    Scrabble-->Tile;
+    Main-->Scrabble;
+    Main-->Tool
+    Scrabble-->BagTile;
     Scrabble-->Player;
     Scrabble-->Board;
+    BagTile-->Tile;
     Board-->Cell;
     Cell-->Tile;
 ```

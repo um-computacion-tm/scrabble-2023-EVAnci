@@ -102,10 +102,9 @@ class TestMain(unittest.TestCase):
         output_buffer = io.StringIO()
         sys.stdout = output_buffer
         main = Main()
-        with patch.object(main, 'end') as mock_end:
-            main.menu()
-            mock_end.assert_called_once()
+        main.menu()
         sys.stdout = sys.__stdout__
+        self.assertEqual(main.scrabble.current_player.giveup, True)
     
     @patch('builtins.input', side_effect=['elio','valen','palabra','H'])
     @patch('game.cli.main.Tool.range_input', return_value=2)
