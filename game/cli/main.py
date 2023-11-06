@@ -45,10 +45,8 @@ class Main():
         continue_game = False
         while not continue_game:
             word = input('Palabra: ')
-            # row = self.tool.range_input(1,15,'Posicion de la fila: ')-1
-            # column = self.tool.range_input(1,15,'Posicion de la columna: ')-1
-            row = int(input('Posicion de la fila: '))
-            column = int(input('Posicion de la columna: '))
+            row = self.tool.range_input(1,15,'Posicion de la fila: ')-1
+            column = self.tool.range_input(1,15,'Posicion de la columna: ')-1
             horizontal = True if input('Orientacion [H/V]: ').lower() == 'h'else False
             try:
                 self.scrabble.play(word, (row,column), horizontal)

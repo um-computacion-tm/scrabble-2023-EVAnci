@@ -3,6 +3,7 @@ from unittest.mock import patch, Mock
 from game.cli.main import Main
 from game.bagtiles import Tile
 from tests.graph import BOARD_OUTPUT, LECTERN_OUTPUT
+import ipdb
 
 class TestMain(unittest.TestCase):
     @patch('builtins.input', side_effect=['elio','valen'])
@@ -106,7 +107,7 @@ class TestMain(unittest.TestCase):
             mock_end.assert_called_once()
         sys.stdout = sys.__stdout__
     
-    @patch('builtins.input', side_effect=['elio','valen','palabra',7,7,'H'])
+    @patch('builtins.input', side_effect=['elio','valen','palabra','H'])
     @patch('game.cli.main.Tool.range_input', return_value=2)
     def test_selection_play(self, mock_input, mock_range_input):
         output_buffer = io.StringIO()
@@ -118,7 +119,7 @@ class TestMain(unittest.TestCase):
         sys.stdout = sys.__stdout__
         mock_play.assert_called_once()
 
-    @patch('builtins.input', side_effect=['elio','valen','palabra',7,7,'H','M'])
+    @patch('builtins.input', side_effect=['elio','valen','palabra','H','M'])
     @patch('game.cli.main.Tool.range_input', return_value=2)
     def test_selection_play_exception(self, mock_input, mock_range_input):
         output_buffer = io.StringIO()
