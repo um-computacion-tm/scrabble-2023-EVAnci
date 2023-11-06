@@ -37,7 +37,6 @@ class Main():
                 self.scrabble.current_player.times_pass += 1
             elif selection == 'giveup':
                 self.scrabble.current_player.giveup = True
-                self.end() 
             elif selection == 'goback':
                 pass
 
@@ -78,8 +77,10 @@ class Main():
         return 'pass'
     
     def end(self):
-        winners_result = []
-        print()
+        winners_result = self.scrabble.winners()
+        print('Los ganadores son: ')
+        for i, player in enumerate(winners_result):
+            print(f'{i}. Jugador: {player.name} - Puntaje: {player.points}')
 
     def game(self):
         while not(self.scrabble.end_game()):
