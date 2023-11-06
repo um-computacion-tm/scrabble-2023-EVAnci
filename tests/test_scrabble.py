@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import patch
 from game.scrabble import ScrabbleGame, InvalidWord
+from game.board import NotInternetConnection
 from game.bagtiles import Tile
 
 class TestScrabbleGame(unittest.TestCase):
@@ -112,6 +113,15 @@ El jugador 2: (Mundo) tiene 0 puntos
             scrabble.play('laa',(7,7),True)
 
     @patch('game.board.Board.validate')
+    def test_play_not_internet(self, mock_validate):
+        mock_validate.side_effect = NotInternetConnection
+        scrabble = ScrabbleGame(players_count = 3)
+        scrabble.players[0].lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        scrabble.next_turn()
+        with self.assertRaises(InvalidWord):
+            scrabble.play('laa',(7,7),True)
+
+    @patch('game.board.Board.validate')
     def test_play_almost_empty_bag(self, mock_validate):
         mock_validate.return_value = True
         scrabble = ScrabbleGame(players_count = 3)
@@ -130,6 +140,15 @@ El jugador 2: (Mundo) tiene 0 puntos
         scrabble.next_turn()
         scrabble.play('casa',(7,7),True)
         self.assertEqual(len(scrabble.players[0].lectern),3)
+
+    def test_winners(self):
+        scrabble = ScrabbleGame(4)
+        scrabble.players[0].points = 20
+        scrabble.players[1].points = 25
+        scrabble.players[2].points = 10
+        scrabble.players[3].points = 40
+        result = scrabble.winners()
+        self.assertEqual(result, [scrabble.players[3],scrabble.players[1],scrabble.players[0],scrabble.players[2]])
 
 if __name__ == '__main__':
     unittest.main()

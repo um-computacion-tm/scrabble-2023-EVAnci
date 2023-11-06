@@ -1,3 +1,5 @@
+from game.bagtiles import Wildcard
+
 LECTERN_SIZE = 7
 
 class Player:
@@ -29,6 +31,11 @@ class Player:
         for letter in letters:
             for tile in self.lectern:
                 if tile.letter == letter:
+                    return_tiles.append(tile)
+                    self.lectern.remove(tile)
+                    break
+                elif type(tile) == type(Wildcard()):
+                    tile.letter = letter
                     return_tiles.append(tile)
                     self.lectern.remove(tile)
                     break
@@ -70,7 +77,7 @@ class Player:
         valid = 0
         for letter in word:
             for tile in lectern:
-                if letter == tile.letter:
+                if letter == tile.letter or type(tile) == type(Wildcard()):
                     valid += 1
                     lectern.remove(tile)
                     break

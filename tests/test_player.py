@@ -1,6 +1,6 @@
 import unittest
 from game.player import Player
-from game.bagtiles import BagTiles, Tile
+from game.bagtiles import BagTiles, Tile, Wildcard
 from tests.graph import LECTERN_OUTPUT
 
 class TestPlayer(unittest.TestCase):
@@ -98,6 +98,12 @@ class TestPlayer(unittest.TestCase):
         result = player.search('áéíóú')
         self.assertEqual(result, True)
 
+    def test_search_word_with_wildcard(self):
+        player = Player()
+        player.give_tiles([Tile('A',1), Tile('C', 1), Tile('C',1), Tile('S',3), Wildcard(), Tile('S',3), Tile('G',2)])
+        result = player.search('casa')
+        self.assertEqual(result, True)
+
     def test_fill(self):
         bag = BagTiles()
         player = Player()
@@ -114,9 +120,29 @@ class TestPlayer(unittest.TestCase):
 
     def test_take_2(self):
         player = Player()
-        player.lectern = [Tile('C',1),Tile('A',1),Tile('S',3),Tile('A',1),Tile('L',2),Tile('R',3),Tile('C',1)]
+        c = Tile('C',3)
+        a = Tile('A',1)
+        s = Tile('S',1)
+        l = Tile('L',2)
+        r = Tile('R',3)
+        player.lectern = [c,a,s,a,l,r,c]
         result = player.take('casa')
         self.assertEqual(len(result),4)
+        self.assertEqual(result, [c,a,s,a])
+        self.assertEqual(len(player.lectern),3)
+
+    def test_take_wildcard_tile(self):
+        player = Player()
+        c = Tile('C',3)
+        a = Tile('A',1)
+        l = Tile('L',2)
+        r = Tile('R',3)
+        wildcard = Wildcard()
+        player.lectern = [c,a,wildcard,a,l,r,c]
+        result = player.take('casa')
+        wildcard.letter = 'S'
+        self.assertEqual(len(result),4)
+        self.assertEqual(result, [c,a,wildcard,a])
         self.assertEqual(len(player.lectern),3)
 
     def test_print_lectern(self):

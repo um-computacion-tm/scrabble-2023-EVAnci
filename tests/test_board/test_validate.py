@@ -286,6 +286,30 @@ class Test_Validate_not_empty(unittest.TestCase):
         is_valid = board.validate_not_empty(word, pos, horizontal)
         self.assertEqual(is_valid, False)
 
+    @patch('game.board.dle.search_by_word')
+    def test_double_complex_word_validation_valid_right_left(self, mock_search_by_word):
+        mock_search_by_word.return_value.title = 'sus | Definición | Diccionario de la lengua española | RAE - ASALE'  
+        board = Board()
+        board.grid[4][7].tile = Tile('C',3)
+        board.grid[5][7].tile = Tile('A',1)
+        board.grid[6][7].tile = Tile('S',6)
+        board.grid[7][7].tile = Tile('A',1)
+        board.grid[8][7].tile = Tile('S',6)
+        board.grid[5][6].tile = Tile('L',3)
+        board.grid[5][8].tile = Tile('S',6)
+        board.grid[5][9].tile = Tile('O',1)
+        board.grid[6][9].tile = Tile('S',6)
+        board.grid[7][9].tile = Tile('O',1)
+        board.grid[8][5].tile = Tile('C',3)
+        board.grid[8][6].tile = Tile('A',1)
+        board.grid[8][8].tile = Tile('O',1)
+        board.grid[8][9].tile = Tile('S',1)
+        word = 'sumo'
+        horizontal = False
+        pos = (5,8)
+        is_valid = board.validate_not_empty(word, pos, horizontal)
+        self.assertEqual(is_valid, True)
+
 class Test_Validate(unittest.TestCase):
     @patch('game.board.dle.search_by_word')
     def test_invalid_word(self, mock_search_by_word):
@@ -317,7 +341,7 @@ class Test_Validate(unittest.TestCase):
         mock_search_by_word.return_value = None
         board = Board()
         with self.assertRaises(NotInternetConnection):
-            board.validate(word='CASA',pos=(7,7),horizontal=True)
+            board.validate(word='NOSO',pos=(7,7),horizontal=True)
 
 if __name__ == '__main__':
     unittest.main()

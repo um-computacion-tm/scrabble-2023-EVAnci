@@ -22,29 +22,32 @@ Spanish-language games sold within North America (known as Scrabble - Spanish Ed
 
 #### Complete guide of the rules of the game [here](https://service.mattel.com/instruction_sheets/51280.pdf)
 
-## Run Tests
+## Download
+
+```bash
+git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
+```
+
+## Running the game and coverage
 
 You can run just the following:
 
 ```bash
-python3 -m unittest
+bash play.sh
 ```
 
-Or if you want to see the [coverage](https://coverage.readthedocs.io/en/7.3.0/):
+Or if you want to start it manually:
+
+1. Build the image with a name:
 
 ```bash
-coverage run -m unittest && coverage report -m
+docker build -t <nombre> .
 ```
 
-In case you don't have coverage installed, I recommend installing it on a python [venv](https://docs.python.org/3/library/venv.html):
+2. Run the image:
 
 ```bash
-# 1. Create a Virtual Environment
-python3 -m venv env
-# 2. Activate the Virtual Environment
-source env/bin/activate
-# 3. Install Requirements
-pip3 install -r requirements.txt
+docker run -it --name name_id -p 5000:5000 my_image_name:latest
 ```
 
 This will also install all the dependences needed.
@@ -62,12 +65,6 @@ See the [CHANGELOG](https://github.com/um-computacion-tm/scrabble-2023-EVAnci/bl
 | _*Codeclimate*_ | *_Coverage_* | *_Maintainability_* |
 | :---:   | :---:   | :---: |
 | Status | [![Test Coverage](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/test_coverage)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/test_coverage) | [![Maintainability](https://api.codeclimate.com/v1/badges/49690d7461830eb144db/maintainability)](https://codeclimate.com/github/um-computacion-tm/scrabble-2023-EVAnci/maintainability) |
-
-## Download
-
-```bash
-git clone https://github.com/um-computacion-tm/scrabble-2023-EVAnci.git
-```
 
 ## Classes work flow
 

@@ -1,4 +1,4 @@
-from game.board import Board
+from game.board import Board, NotInternetConnection
 from game.player import Player
 from game.bagtiles import BagTiles, InsufficientTiles
 
@@ -32,14 +32,17 @@ class ScrabbleGame:
 
     def play(self, word, pos, horizontal):
         player = self.current_player
-        is_valid = self.board.validate(word,pos,horizontal)
+        try:
+            is_valid = self.board.validate(word,pos,horizontal)
+        except NotInternetConnection:
+            is_valid = False
         if is_valid:
             no_intersections_word = self.board.get_word_without_intersections(word,pos,horizontal)
             player.points += 50 if len(no_intersections_word) == 7 else 0
             has_letters = player.search(no_intersections_word)
             if has_letters:
                 tiles = player.take(no_intersections_word)
-                player.points = self.board.calculate_word_value(word,pos,horizontal)
+                player.points += self.board.calculate_word_value(word,pos,horizontal)
                 self.board.put_word(tiles,pos,horizontal)
                 try:
                     player.fill(self.bag_tiles)
@@ -48,6 +51,18 @@ class ScrabbleGame:
                         player.give_tiles(self.bag_tiles.take(len(self.bag_tiles.tiles)))
         else:
             raise InvalidWord
+
+    def winners(self):
+        winners = self.players.copy()
+        for _ in range(len(winners)-1):
+            for i in range(len(winners)-1):
+                player = winners[i]
+                next_player = winners[i+1]
+                if player.points < next_player.points:
+                    actual = player
+                    winners[i] = next_player
+                    winners[i+1] = actual
+        return winners
 
     def end_game(self):
         end = False

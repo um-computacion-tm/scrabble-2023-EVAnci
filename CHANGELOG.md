@@ -4,9 +4,70 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Status: [Unreleased]
+## Status: [Released]
 
 Development
+
+## [0.3.3] - 2023-11-4
+
+### Added
+
+- Miscelaneous:
+    - `play.sh` and `remove.sh` scripts to easly install and remove scrabble with docker.
+
+### Known Issues
+
+- Try to refactor calculate word value, as to use tiles in board instead of the DATA file. With this method, wildcard tile value are measured incorrectly.
+
+## [0.3.2] - 2023-11-4
+
+### Added
+
+- Scrabble class:
+    - Winners list, for the end of the game.
+
+### Fixed
+
+- Player class:
+    - Add support for taking a wildcard tile and automaticly select the letter.
+
+- Main class: 
+    - The input of indexes of row and column are validated.
+
+### Known Issues
+
+- ~~Wildcard Tile isn't supported yet.~~
+- Try to refactor calculate word value, as to use tiles in board instead of the DATA file. With this method, wildcard tile value are measured incorrectly.
+- ~~The input of indexes of row and column aren't validated on main class.~~
+
+## [0.3.1] - 2023-11-2
+
+### Added
+
+- Support for a local dictionary in case there is no internet connection.
+
+### Fixed
+
+- Board class:
+    - Add support for the complex case with double side validation in validate not empty
+
+### Known Issues
+
+- ~~A complex case with doble side validation isn't working.~~
+- Wildcard Tile isn't supported yet.
+- Try to refactor calculate word value, as to use tiles in board instead of the DATA file.
+
+## [0.3.0] - 2023-10-31
+
+### Fixed
+
+- Error while adding point to player in scrabble class.
+    - The points where replaced with the points of the last word instead of being added.
+
+### Known Issues
+
+- A complex case with doble side validation isn't working.
+- Wildcard Tile isn't supported yet.
 
 ## [0.2.9] - 2023-10-30
 
@@ -487,6 +548,6 @@ Development
 
 - The list of 98 tiles.
 
-### Knowm Issues
+### Known Issues
 
 - Anything at the moment.

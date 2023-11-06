@@ -45,14 +45,15 @@ class Main():
         continue_game = False
         while not continue_game:
             word = input('Palabra: ')
-            row = int(input('Posicion de la fila: '))
-            column = int(input('Posicion de la columna: '))
+            row = self.tool.range_input(1,15,'Posicion de la fila: ')-1
+            column = self.tool.range_input(1,15,'Posicion de la columna: ')-1
             horizontal = True if input('Orientacion [H/V]: ').lower() == 'h'else False
             try:
                 self.scrabble.play(word, (row,column), horizontal)
                 continue_game = True
             except:
-                retry = input('Esa palabra no es valida! Enter para intentalo otra vez o [M] para salir al menu.')
+                print('Esa palabra no es valida! Revisa tu conexion a internet si crees que tu palabra es valida.')
+                retry = input('Enter para intentalo otra vez o [M] para salir al menu.')
                 if retry.upper() == 'M':
                     return None
         return 'pass'
@@ -77,7 +78,8 @@ class Main():
         return 'pass'
     
     def end(self):
-        pass
+        winners_result = []
+        print()
 
     def game(self):
         while not(self.scrabble.end_game()):
