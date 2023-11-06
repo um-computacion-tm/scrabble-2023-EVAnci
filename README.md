@@ -78,12 +78,12 @@ Here is a simple flow of classes communication:
 
 ```mermaid
 graph TD;
-    main.py-->Scrabble;
+    Main-->Scrabble;
+    Main-->Tool
     Scrabble-->BagTile;
     Scrabble-->Player;
     Scrabble-->Board;
     BagTile-->Tile;
-    BagTile-->Wildcard(Tile);
     Board-->Cell;
     Cell-->Tile;
 ```
