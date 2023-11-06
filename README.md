@@ -82,8 +82,8 @@ graph TD;
     Scrabble-->BagTile;
     Scrabble-->Player;
     Scrabble-->Board;
-    Bagtile-->Tile;
-    Bagtile-->Wildcard(Tile);
+    BagTile-->Tile;
+    BagTile-->Wildcard(Tile);
     Board-->Cell;
     Cell-->Tile;
 ```
